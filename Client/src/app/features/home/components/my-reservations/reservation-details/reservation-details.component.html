@@ -1,0 +1,100 @@
+<div class="wrapper main-mtb" *ngIf="reservation.accommodation !== undefined">
+    <h1 class="text-dark-blue mb-20">Резервация №{{ reservation.id }}</h1>
+    <div class="display-flex flex-wrap gap-1 content-between items-center">
+        <div class="display-flex flex-wrap gap-15 items-center">
+            <div class="property-image-container">
+              <img [src]="reservation.accommodation.coverPhotoUrl" />
+            </div>
+            <div class="display-flex flex-column content-between">
+                <h2 class="property-title text-dark-blue mb-10">{{ reservation.accommodation.type[0].name }} "{{ reservation.accommodation.name }}"</h2>
+                <div class="star-rating">
+                    <mat-icon *ngFor="let i of [].constructor(reservation.accommodation.stars)">star</mat-icon>
+                </div>
+              <a [href]="'tel:'+ reservation.accommodation.phoneNumber" class="property-type">
+                <i class="fa-solid fa-phone text-dark-blue mt-10 mr-10"></i>{{ reservation.accommodation.phoneNumber }}
+              </a>
+              <a target="_blank" [href]="reservation.accommodation.locationUrl">
+                <p class="property-type mt-20">{{ reservation.accommodation.address }}</p>
+              </a>
+            </div>
+        </div>
+        <div class="display-flex gap-15">
+            <div class="display-flex flex-column gap-15 text-center">
+                <p class="check-label">Настаняване <br>след</p>
+                <h3 class="check-time text-accent">{{ reservation.accommodation.checkInTime.slice(0,5) }} </h3>
+                <p class="check-date text-dark-blue">{{ reservation.startDate | date: 'dd.MM.yyyy'}} г.</p>
+            </div>
+            <div class="display-flex flex-column gap-15 text-center">
+                <p class="check-label">Напускане <br>преди</p>
+                <h3 class="check-time text-accent">{{ reservation.accommodation.checkOutTime.slice(0,5) }} </h3>
+                <p class="check-date text-dark-blue">{{ reservation.endDate | date: 'dd.MM.yyyy'}} г.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-40">
+        <p class="property-subtitle"><span class="font-weight-500">Брой гости:</span> {{reservation.guests }}</p>
+
+        <mat-divider class="mt-20 mb-20"></mat-divider>
+
+        <div class="display-flex flex-wrap content-between items-center">
+            <div>
+                <p class="mb-10 text-gray">1 x Маса за 4 (пушачи, външна)</p>
+                <p class="mb-10 text-gray">3 x Маса за 2 (пушачи, външна)</p>
+            </div>
+            <h3 class="price-label text-accent">{{ reservation.totalPrice }} лв.</h3>
+        </div>
+
+    </div>
+
+    <div class="display-flex content-end">
+        <button mat-raised-button color="primary" class="text-right" (click)="openPrintDialog()">Разпечатай</button>
+    </div>
+
+</div>
+
+<div class="wrapper main-mtb" *ngIf="reservation.restaurant !== undefined">
+  <h1 class="text-dark-blue mb-20">Резервация №{{ reservation.id }}</h1>
+  <div class="display-flex flex-wrap gap-1 content-between items-center">
+    <div class="display-flex flex-wrap gap-15 items-center">
+      <div class="property-image-container">
+        <img [src]="reservation.restaurant.coverPhotoUrl" />
+      </div>
+      <div class="display-flex flex-column content-between">
+        <h2 class="property-title text-dark-blue mb-10">{{ reservation.restaurant.type[0].name }} "{{ reservation.restaurant.name }}"</h2>
+        <div class="star-rating">
+          <mat-icon *ngFor="let i of [].constructor(reservation.restaurant.stars)">star</mat-icon>
+        </div>
+        <a [href]="'tel:'+ reservation.restaurant.phoneNumber" class="property-type">
+          <i class="fa-solid fa-phone text-dark-blue mt-10 mr-10"></i>{{ reservation.restaurant.phoneNumber }}
+        </a>
+        <a target="_blank" [href]="reservation.restaurant.locationUrl">
+          <p class="property-type mt-20">{{ reservation.restaurant.address }}</p>
+        </a>
+      </div>
+    </div>
+    <div class="display-flex gap-15">
+      <div class="display-flex flex-column gap-15 text-center">
+          <h3 class="check-time text-accent">{{ reservation.startDate | date: 'HH:mm' }}</h3>
+          <p class="check-date text-dark-blue">{{ reservation.startDate | date: 'dd.MM.yyyy' }} г.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="mt-40">
+    <p class="property-subtitle"><span class="font-weight-500">Брой гости:</span> {{ reservation.guests }}</p>
+
+    <mat-divider class="mt-20 mb-20"></mat-divider>
+
+    <div class="display-flex flex-wrap content-between items-center">
+      <div>
+        <p class="mb-10 text-gray" *ngFor="let table of reservation.tables">Маса №{{ table.number }} (за {{ table.capacity }} {{table.capacity === 1 ? 'гост' : 'гости'}}, {{ table.isSmokingAllowed ? 'за пушачи' : 'за непушачи' }}, {{ table.isOutdoor ? 'външна' : 'вътрешна' }})</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="display-flex content-end">
+    <button mat-raised-button color="primary" class="text-right" (click)="openPrintDialog()">Разпечатай</button>
+  </div>
+
+</div>

@@ -1,0 +1,123 @@
+<div class="wrapper">
+
+  <gallery gallerize [items]="images" loop class="gallery mt-20 mb-20" />
+
+  <mat-card>
+    <mat-card-content class="display-flex flex-wrap content-between property-card-container">
+      <div>
+        <div class="display-flex gap-1">
+            <h2 class="property-title text-dark-blue mb-10">{{ restaurant.name }}</h2>
+            <div class="display-flex gap-05" *ngIf="isAuthenticated">
+              <a [routerLink]="['/restaurant/manage']" *ngIf="isCurrentUserOwner()" [queryParams]="{ id: restaurant.id}">
+                <button mat-button color="primary">Управлявай</button>
+              </a>
+            </div>
+          </div>
+        <div class="star-rating">
+          <mat-icon *ngFor="let i of [].constructor(restaurant.stars)">star</mat-icon>
+        </div>
+        <p class="property-type">{{ restaurant.type.name }}</p>
+        <a [href]="'tel:'+ restaurant.phoneNumber" class="property-type">
+          <i class="fa-solid fa-phone text-dark-blue mt-10 mr-10"></i>{{ restaurant.phoneNumber }}
+        </a>
+
+        <h3 class="label mt-20 mb-10">Удобства</h3>
+        <div class="display-flex gap-1 flex-wrap content-between text-dark-blue">
+          <div class="display-flex gap-05 amenity-container" *ngIf="restaurant.hasParking">
+            <i class="fa-solid fa-square-parking"></i>
+            <p class="amenity-label">Паркинг</p>
+          </div>
+          <div class="display-flex gap-05 amenity-container" *ngIf="restaurant.hasPosTerminal">
+            <i class="fa-solid fa-credit-card"></i>
+            <p class="amenity-label">POS терминал</p>
+          </div>
+          <div class="display-flex gap-05 amenity-container" *ngIf="restaurant.acceptOnlinePayments">
+            <i class="fa-solid fa-credit-card"></i>
+            <p class="amenity-label">Плащане през Гостополис</p>
+          </div>
+          <div class="display-flex gap-05 amenity-container" *ngIf="restaurant.acceptPets">
+            <i class="fa-solid fa-dog"></i>
+            <p class="amenity-label">Домашни любимци</p>
+          </div>
+        </div>
+      </div>
+      <div>
+        <h3 class="label mt-20 mb-10">Локация</h3>
+        <google-map #myGoogleMap height="15rem" width="500px" [zoom]="zoom" [center]="center"
+                    [options]="options" class="map"></google-map>
+        <a target="_blank" [href]="restaurant.locationUrl"><p class="property-type mt-20">{{ restaurant.address }}</p></a>
+      </div>
+
+    </mat-card-content>
+  </mat-card>
+
+    <mat-card class="mt-20">
+        <mat-card-content class="display-flex flex-column gap-1">
+            <h2 class="section-title">За обекта</h2>
+            <div [innerHTML]="restaurant.description"></div>
+            <div class="display-flex flex-column gap-05">
+              <p><span class="bold">Езици, говорени от персонала:</span> {{ restaurant.spokenLanguages }}</p>
+            </div>
+        </mat-card-content>
+    </mat-card>
+
+    <h2 class="section-title mt-20 mb-20 ml-10">Работно време</h2>
+    <mat-card class="mt-20">
+      <mat-card-content class="display-flex flex-column gap-1">
+          <div class="display-flex flex-column gap-05">
+            <p class="bold">{{ restaurant.workingTime !== null ? '' : 'Работното време на обекта все още не е въведено.' }}</p>
+            <p *ngIf="restaurant.workingTime !== null">Понеделник: {{ restaurant.workingTime.mondayOpenTime !== null ? (restaurant.workingTime.mondayOpenTime.slice(0, 5) + ' - ' + restaurant.workingTime.mondayCloseTime.slice(0, 5)) : 'Затворено' }}</p>
+            <p *ngIf="restaurant.workingTime !== null">Вторник: {{ restaurant.workingTime.tuesdayOpenTime !== null ? (restaurant.workingTime.tuesdayOpenTime.slice(0, 5) + ' - ' + restaurant.workingTime.tuesdayCloseTime.slice(0, 5)) : 'Затворено' }}</p>
+            <p *ngIf="restaurant.workingTime !== null">Сряда: {{ restaurant.workingTime.wednesdayOpenTime !== null ? (restaurant.workingTime.wednesdayOpenTime.slice(0, 5) + ' - ' + restaurant.workingTime.wednesdayCloseTime.slice(0, 5)) : 'Затворено' }}</p>
+            <p *ngIf="restaurant.workingTime !== null">Четвъртък: {{ restaurant.workingTime.thursdayOpenTime !== null ? (restaurant.workingTime.thursdayOpenTime.slice(0, 5) + ' - ' + restaurant.workingTime.thursdayCloseTime.slice(0, 5)) : 'Затворено' }}</p>
+            <p *ngIf="restaurant.workingTime !== null">Петък: {{ restaurant.workingTime.fridayOpenTime !== null ? (restaurant.workingTime.fridayOpenTime.slice(0, 5) + ' - ' + restaurant.workingTime.fridayCloseTime.slice(0, 5)) : 'Затворено' }}</p>
+            <p *ngIf="restaurant.workingTime !== null">Събота: {{ restaurant.workingTime.saturdayOpenTime !== null ? (restaurant.workingTime.saturdayOpenTime.slice(0, 5) + ' - ' + restaurant.workingTime.saturdayCloseTime.slice(0, 5)) : 'Затворено' }}</p>
+            <p *ngIf="restaurant.workingTime !== null">Неделя: {{ restaurant.workingTime.sundayOpenTime !== null ? (restaurant.workingTime.sundayOpenTime.slice(0, 5) + ' - ' + restaurant.workingTime.sundayCloseTime.slice(0, 5)) : 'Затворено' }}</p>
+            <p class="bold" *ngIf="isCurrentlyOpen && restaurant.workingTime !== null">Сега е отворено!</p>
+            <p class="bold" *ngIf="!isCurrentlyOpen && restaurant.workingTime !== null">Сега е затворено!</p>
+          </div>
+      </mat-card-content>
+  </mat-card>
+
+    <h2 class="section-title mt-20 mb-20 ml-10" *ngIf="restaurant.menus.length > 0">Меню</h2>
+    <mat-accordion multi>
+        <mat-expansion-panel *ngFor="let menu of restaurant.menus">
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                  {{ menu.name }}
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+
+            <div class="display-flex flex-column gap-1" *ngFor="let category of productCategories; let i = index">
+                <h2 class="bold text-dark-blue" *ngIf="hasProducts(menu, i + 1)">{{ category }}</h2>
+                <div class="display-flex gap-05 flex-wrap" *ngFor="let product of menu.products">
+                    <mat-card class="product-width" *ngIf="product.type === i + 1">
+                        <div class="product-image-container mb-10">
+                          <img class="product-image" mat-card-image [src]="product.imageUrl" alt="Снимка">
+                        </div>
+                        <mat-card-content>
+                            <p class="text-center mb-10">
+                              {{ product.name }}
+                            </p>
+                        </mat-card-content>
+                    </mat-card>
+                </div>
+            </div>
+        </mat-expansion-panel>
+    </mat-accordion>
+
+    <h2 class="section-title mt-20 mb-20 ml-10" *ngIf="restaurant.tableConfigurations !== null">Избери оферта</h2>
+    <div class="display-flex flex-wrap content-start gap-1">
+      <mat-card class="display-flex content-between width-32 table-container" *ngFor="let cfg of restaurant.tableConfigurations, let i = index">
+            <mat-card-header *ngFor="let table of cfg">
+                <mat-card-title>1 X Маса за {{ table.capacity === 1 ? table.capacity : table.capacity + '-ма' }}</mat-card-title>
+                <mat-card-subtitle>{{ table.isOutdoor ? 'Външна' : 'Вътрешна'}}, {{ table.isSmokingAllowed ? 'За пушачи' : 'За непушачи'}}</mat-card-subtitle>
+            </mat-card-header>
+            <mat-card-actions class="display-flex content-between">
+                <h3 class="price-label ml-10 text-accent">{{ this.data.startTime.substr(this.data.startTime.length - 5) }}</h3>
+                <button mat-stroked-button color="primary" (click)="reserve(i)">Запази</button>
+            </mat-card-actions>
+        </mat-card>
+    </div>
+
+</div>

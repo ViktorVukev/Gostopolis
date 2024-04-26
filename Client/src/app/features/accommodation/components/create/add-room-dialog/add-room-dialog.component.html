@@ -1,0 +1,93 @@
+<h1 mat-dialog-title>Добави стая</h1>
+<form [formGroup]="createForm" (ngSubmit)="create()" method="post">
+  <div mat-dialog-content class="display-flex flex-column mat-dialog-content" style="max-height: 100% !important;">
+
+    <mat-form-field appearance="outline">
+      <mat-label>Избери тип стая</mat-label>
+      <mat-select formControlName="type">
+        <mat-option [value]="i + 1" *ngFor="let type of roomTypes; let i = index">{{ type }}</mat-option>
+      </mat-select>
+      <mat-error *ngIf="type?.touched && type?.errors?.['required']">Полето е задължително.</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Име</mat-label>
+      <input matInput type="text" formControlName="name">
+      <mat-error *ngIf="name?.touched && name?.errors?.['required']">Полето е задължително.</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Цена за нощувка (в лв.)</mat-label>
+      <input matInput type="number" step="0.01" formControlName="pricePerNight">
+      <mat-error *ngIf="pricePerNight?.touched && pricePerNight?.errors?.['required']">Полето е
+        задължително.</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Брой гости</mat-label>
+      <input matInput type="number" min="1" formControlName="capacity">
+      <mat-error *ngIf="capacity?.touched && capacity?.errors?.['required']">Полето е задължително.</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Брой стаи</mat-label>
+      <input matInput type="number" min="1" formControlName="count">
+      <mat-error *ngIf="count?.touched && count?.errors?.['required']">Полето е задължително.</mat-error>
+    </mat-form-field>
+
+    <h2 class="bold">Легла</h2>
+    <p class="mb-10 gray" *ngFor="let bed of beds, let i = index">{{bed.split(': ')[1]}} x {{bedTypes[parseInt(bed.split(': ')[0]) -
+      1]}} <i class="fa-solid fa-xmark text-right xmark-icon cursor-pointer gray" (click)="deleteBed(i)"></i></p>
+    <div class="display-flex gap-05 flex-column" *ngIf="showAddBed">
+      <mat-form-field appearance="outline" class="width-80 mt-10">
+        <mat-label>Избери тип легло</mat-label>
+        <mat-select [(ngModel)]="bedTypeIndex" [ngModelOptions]="{standalone: true}">
+          <mat-option (onSelectionChange)="changeBedType(i + 1)" [value]="i + 1"
+            *ngFor="let type of bedTypes; let i = index">{{ type }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <div class="display-flex gap-1 mb-20">
+        <div class="text-center display-flex gap-05">
+          <span class="input-number-decrement" (click)="decrementBeds()">–</span>
+          <p>{{ numberOfBeds }}</p>
+          <span class="input-number-increment" (click)="incrementBeds()">+</span>
+        </div>
+        <button mat-raised-button (click)="addBed()" type="button">Добави</button>
+      </div>
+
+    </div>
+    <p class="text-light-blue label cursor-pointer" (click)="openAddBed()"><i class="fa-solid fa-plus mr-10"></i>Добави
+      легло</p>
+
+    <h2 class="bold mt-20">Баня</h2>
+    <mat-slide-toggle class="mt-10" color="primary" formControlName="hasPrivateBathroom">Самостоятелна
+      баня</mat-slide-toggle>
+    <p class="text-light-blue label cursor-pointer mt-10 mb-10" (click)="addBathroomAmenity()"><i
+        class="fa-solid fa-plus mr-10"></i>Добави
+      удобства в банята</p>
+    <div class="display-flex flex-wrap content-start" *ngIf="showAddBathroomAmenity">
+      <mat-checkbox (change)="bathroomAmenityChange($event, amenity)" color="primary" class="mat-checkbox"
+        *ngFor="let amenity of allBathroomAmenitiesList">{{ amenity }}</mat-checkbox>
+    </div>
+
+    <h2 class="bold mt-20">Удобства</h2>
+    <p class="text-light-blue label cursor-pointer mt-10 mb-10" (click)="addRoomAmenity()"><i
+        class="fa-solid fa-plus mr-10"></i>Добави удобства</p>
+
+    <ng-container *ngIf="showAddRoomAmenity">
+      <ng-container *ngFor="let category of allRoomAmenitiesList">
+        <h2 class="form-heading text-dark-blue mt-20 ">{{ category.name }}</h2>
+        <div class="display-flex flex-wrap content-start">
+          <mat-checkbox color="primary" (change)="roomAmenityChange($event, category.name, amenity)"
+            class="mat-checkbox" *ngFor="let amenity of category.amenities">{{ amenity }}</mat-checkbox>
+        </div>
+      </ng-container>
+    </ng-container>
+
+  </div>
+
+  <div mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Отказ</button>
+    <button mat-button cdkFocusInitial type="submit">Добави</button>
+  </div>
+</form>

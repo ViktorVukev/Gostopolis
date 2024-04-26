@@ -1,0 +1,17 @@
+<h1 mat-dialog-title>Смяна на профилна снимка</h1>
+
+<form method="post" enctype="multipart/form-data">
+    <div mat-dialog-content>
+        <mat-form-field class="width-100">
+            <mat-toolbar>
+              <input matInput [(ngModel)]="fileName" readonly name="name" />
+            </mat-toolbar>
+            <input type="file" accept="image/*" id="uploadFile" name="uploadFile" (change)="upload($event)"/>
+        </mat-form-field>
+    </div>
+</form>
+
+<div mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Отказ</button>
+    <button mat-button cdkFocusInitial mat-dialog-close (click)="update()">Запази</button>
+</div>

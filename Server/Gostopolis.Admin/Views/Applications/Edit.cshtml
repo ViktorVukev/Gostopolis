@@ -1,0 +1,61 @@
+﻿@using Gostopolis.Data
+@model Gostopolis.Admin.Models.Applications.ApplicationDetailsOutputModel
+
+<div class="container my-5">
+    <div class="p-5 text-center bg-body-tertiary rounded-3">
+        <h1 class="text-body-emphasis">Заявка #@Model.Id - @(Model.Status switch
+                                                           {
+                                                               ApplicationStatus.Approved => "Одобрена",
+                                                               ApplicationStatus.Declined => "Отхвърлена",
+                                                               ApplicationStatus.Pending => "Изчакваща",
+                                                               _ => ""
+                                                               })</h1>
+        <p class="col-lg-8 mx-auto fs-5 text-muted">
+            Създадена на: @Model.CreatedOn.ToString("dd.MM.yyyy г., HH:mm ч.")
+        </p>
+        @if (Model.Status == ApplicationStatus.Approved)
+        {
+            <p class="col-lg-8 mx-auto fs-5 text-muted">
+                Одобрена на: @Model.ApprovedOn.Value.ToString("dd.MM.yyyy г., HH:mm ч.")
+            </p>
+        }
+    
+        @if (Model.Status == ApplicationStatus.Declined)
+        {
+            <p class="col-lg-8 mx-auto fs-5 text-muted">
+                Отхвърлена на: @Model.DeclinedOn.Value.ToString("dd.MM.yyyy г., HH:mm ч.")
+            </p>
+        }
+
+        @if (Model.Status == ApplicationStatus.Pending)
+        {
+            <div class="d-inline-flex gap-2 mb-5">
+                <form method="post" asp-controller="Applications" asp-action="Decline" asp-route-id="@Model.Id">
+                    <button class="btn btn-outline-danger btn-lg px-4 rounded-pill" type="submit">Отхвърли</button>
+                </form>
+                <form method="post" asp-controller="Applications" asp-action="Approve" asp-route-id="@Model.Id">
+                    <button class="btn btn-success btn-lg px-4 rounded-pill" type="submit">Одобри</button>
+                </form>
+            </div>
+        }
+        
+        <div class="row featurette flex-wrap justify-content-center align-items-center">
+            <div class="col-md-4 text-center">
+                <h1 class="featurette-heading fw-normal lh-1">@Model.User.FirstName @Model.User.LastName</h1>
+                <p class="col-lg-8 mx-auto fs-5 text-muted">
+                    @Model.User.Email
+                </p>
+            </div>
+            <div class="col-md-4">
+                <img class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid rounded-5 mx-auto" src="@Model.User.ImageUrl" height="150" width="auto" />
+            </div>
+            <div class="col-md-4 text-center">
+                <a class="text-decoration-none" href="@Model.DocumentUrl" target="_blank">
+                    <button class="btn btn-outline-secondary btn-lg px-4 rounded-pill" type="submit">
+                        <i class="fa-regular fa-file"></i> Документ за самоличност
+                    </button>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

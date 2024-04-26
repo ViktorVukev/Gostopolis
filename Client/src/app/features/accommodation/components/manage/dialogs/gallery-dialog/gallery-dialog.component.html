@@ -1,0 +1,32 @@
+<h1 mat-dialog-title>Добавяне на изображения</h1>
+
+<div mat-dialog-content>
+  <span>Галерията на вашия обект е първото нещо, което потенциалните клиенти ще видят. Поемете ролята на виртуален домакин, като представите вашето пространство чрез качествени снимки. Осигурете на гостите си възможността да се потопят в атмосферата на вашия обект, като включите разнообразие от снимки на интериора и усмивки на вашите доволни клиенти. Помнете, че качеството е ключа – опитайте се да подберете снимки с висока резолюция, като всяка една не надвишава 10MB. Така ще гарантирате, че вашето място за настаняване ще привлече вниманието и интереса на посетителите, които търсят нещо уникално и вдъхновяващо.</span>
+
+  <div class="display-flex gap content-center mt-20 gallery-upload-container">
+    <mat-form-field class="width-100" appearance="outline" (click)="fileInput.click()">
+      <mat-label>Прикачи изображения</mat-label>
+      <input matInput disabled>
+      <button mat-icon-button matSuffix>
+        <mat-icon>attach_file</mat-icon>
+      </button>
+      <input hidden #fileInput multiple type="file" (change)="onSelect($event)" accept="image/*">
+    </mat-form-field>
+  </div>
+
+  <div class="width-60 gallery m0-auto mt-20">
+    <div class="gallery-item" *ngFor="let photo of photos; let i = index">
+      <img [src]="photo">
+
+      <div class="transparent-box display-flex items-center content-center gap-1">
+        <i class="fa-solid fa-trash delete-button text-accent cursor-pointer" matTooltip="Изтрий" (click)="onDelete(i)"></i>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Отказ</button>
+  <button mat-button cdkFocusInitial mat-dialog-close (click)="save()">Запази</button>
+</div>

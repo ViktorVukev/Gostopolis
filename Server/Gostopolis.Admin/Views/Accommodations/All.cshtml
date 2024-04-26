@@ -1,0 +1,48 @@
+﻿@model IEnumerable<Gostopolis.Admin.Models.Accommodations.AccommodationDetailsOutputModel>
+
+<main class="container mt-5">
+    <h2>Всички места за настаняване <span class="badge text-bg-secondary">@Model.Count()</span></h2>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Име</th>
+                <th scope="col">Звезди</th>
+                <th scope="col">ЕИК/УИК</th>
+                <th scope="col">Адрес</th>
+                <th scope="col">Действия</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var accommodation in Model)
+            {
+                <tr>
+                    <th scope="row">@accommodation.Id</th>
+                    <th scope="row">
+                        @accommodation.Type.Name "@accommodation.Name"
+                        @if (accommodation.IsVerified)
+                        {
+                            <span class="badge text-bg-success">Одобрено</span>
+                        }
+                    </th>
+                    <td>
+                        @for (int i = 0; i < accommodation.Stars; i++)
+                        {
+                            <i class="fa fa-star rating-color"></i>
+                        }
+                    </td>
+                    <td>@accommodation.IdentificationNumber</td>
+                    <td>@accommodation.Address</td>
+                    <td>
+                        <button type="button" class="btn btn-warning">
+                            <a asp-action="Details" asp-route-id="@accommodation.Id" class="nav-link px-2">
+                                Детайли
+                            </a>
+                        </button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</main>

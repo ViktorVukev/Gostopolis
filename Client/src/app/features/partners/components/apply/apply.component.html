@@ -1,0 +1,22 @@
+<div class="background">
+  <div class="text-center width-50 content-container display-flex flex-column">
+    <h1 class="text-dark-blue text-center">Станете наш патньор</h1>
+    <p class="mt-20 mb-20">Искате да популяризирате Вашия бизнес? Искате да организирате по-лесно работата на служителите?
+      Остава още една последна стъпка преди да дигитализирате Вашия хотел или ресторант - необходимо е да преминете през
+      процес на верификация. Можете да ни изпратите документ, с който да докажете Вашата самоличност, а модератор ще
+      прегледа възможно най-бързо Вашата заявка, като ще сравни информацията от профила Ви с тази в документа. Очакваме
+      Ви!</p>
+
+    <mat-form-field class="m0-auto">
+        <mat-toolbar>
+          <input matInput [(ngModel)]="fileName" readonly name="name" />
+        </mat-toolbar>
+        <input type="file" accept="image/*,.pdf" id="uploadFile" (change)="uploadFile($event)" name="uploadFile" />
+    </mat-form-field>
+
+    <div class="mb-20">
+      <button mat-flat-button color="primary" (click)="apply()">Кандидатствайте</button>
+    </div>
+
+  </div>
+</div>

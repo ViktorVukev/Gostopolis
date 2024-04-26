@@ -1,0 +1,105 @@
+<h1 mat-dialog-title>Редакция на обща информация</h1>
+
+<form [formGroup]="updateForm" (ngSubmit)="update()">
+  <div mat-dialog-content class="display-flex flex-column gap-1">
+      <mat-form-field appearance="outline">
+          <mat-label>Тип</mat-label>
+          <mat-select formControlName="typeId">
+              <mat-option *ngFor="let type of restaurantTypes" [value]="type.id">{{ type.name }}</mat-option>
+          </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+          <mat-label>Име</mat-label>
+          <input type="text" matInput formControlName="name">
+        <mat-error *ngIf="name?.touched && name?.errors?.['required']">Полето е задължително.</mat-error>
+        <mat-error *ngIf="name?.touched && name?.errors?.['minlength']">Въведете поне 2 символа.</mat-error>
+        <mat-error *ngIf="name?.touched && name?.errors?.['maxlength']">Въведете не повече от 50 символа.</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+          <mat-label>УИК/ЕИК</mat-label>
+          <input type="text" matInput  formControlName="identificationNumber">
+        <mat-error *ngIf="identificationNumber?.touched && identificationNumber?.errors?.['required']">Полето е задължително.</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+          <mat-label>Локация</mat-label>
+          <input matInput type="text" class="my-search-box" (keydown.enter)="$event.preventDefault()" placeholder="Въведете адрес..." #search  formControlName="address"/>
+        <mat-error *ngIf="address?.touched && address?.errors?.['required']">Полето е задължително.</mat-error>
+      </mat-form-field>
+
+    <mat-form-field appearance="outline" class="width-40 name-input file-field">
+      <mat-label>Документ</mat-label>
+      <mat-toolbar>
+        <input matInput [value]="fileName" readonly name="name" />
+      </mat-toolbar>
+      <input type="file" accept="image/*,.pdf" id="uploadFile" (change)="uploadFile($event)" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Езици, говорени от персонала</mat-label>
+      <mat-chip-grid #chipGrid aria-label="Избор на езици">
+        @for (language of languages; track language) {
+        <mat-chip-row (removed)="removeLanguage(language)">
+        {{ language }}
+        <button matChipRemove [attr.aria-label]="'премахни ' + language">
+          <mat-icon>cancel</mat-icon>
+        </button>
+      </mat-chip-row>
+        }
+      </mat-chip-grid>
+      <input placeholder="Нов език..." #languageInput [formControl]="languageCtrl"
+             [matChipInputFor]="chipGrid" [matAutocomplete]="auto"
+             [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+             (matChipInputTokenEnd)="addLanguage($event)" formControlName="languages">
+
+      <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selectedLanguage($event)">
+        @for (language of filteredLanguages | async; track language) {
+        <mat-option [value]="language">{{ language }}</mat-option>
+        }
+      </mat-autocomplete>
+    </mat-form-field>
+
+      <mat-form-field appearance="outline">
+          <mat-label>Телефон</mat-label>
+          <span class="text-gray" matTextPrefix>+359 &nbsp;</span>
+          <input type="tel" matInput formControlName="phoneNumber">
+        <mat-error *ngIf="phoneNumber?.touched && phoneNumber?.errors?.['required']">Полето е задължително.</mat-error>
+      </mat-form-field>
+
+      <div class="quill-editor-container">
+          <p class="name-subtitle label mb-1rem">Описание</p>
+          <quill-editor placeholder="Детайли за вашия обект..." class="quill-editor"  formControlName="description">
+          </quill-editor>
+        <mat-error *ngIf="description?.touched && description?.errors?.['required']">Полето е задължително.</mat-error>
+        <mat-error *ngIf="name?.touched && name?.errors?.['minlength']">Въведете поне 50 символа.</mat-error>
+      </div>
+
+    <div class="display-flex items-center">
+      <igc-rating (igcChange)="ratingChanged($event);" min="1" max="5" [value]="restaurant.stars"></igc-rating>
+    </div>
+
+      <div class="display-flex items-center">
+          <mat-slide-toggle color="primary" formControlName="hasParking">Паркинг</mat-slide-toggle>
+      </div>
+
+      <div class="display-flex items-center">
+          <mat-slide-toggle color="primary" formControlName="hasPosTerminal">POS терминал</mat-slide-toggle>
+      </div>
+
+      <div class="display-flex items-center">
+          <mat-slide-toggle color="primary" formControlName="acceptOnlinePayments">Плащане през нашата платформа</mat-slide-toggle>
+      </div>
+
+      <div class="display-flex items-center">
+          <mat-slide-toggle color="primary" formControlName="acceptPets">Домашни любимци</mat-slide-toggle>
+      </div>
+
+  </div>
+
+  <div mat-dialog-actions align="end">
+      <button mat-button mat-dialog-close>Отказ</button>
+      <button mat-button type="submit">Запази</button>
+  </div>
+</form>

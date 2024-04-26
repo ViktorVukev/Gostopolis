@@ -1,0 +1,174 @@
+<div class="wrapper">
+    <div class="card-content gap-1 mt-40 items-baseline">
+        <mat-form-field appearance="outline" class="input-1">
+            <input matInput placeholder="Накъде пътуваш?" [(ngModel)]="data.town">
+            <mat-icon matSuffix class="text-dark-blue cursor-pointer">place</mat-icon>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="input-2">
+            <mat-date-range-input [rangePicker]="picker" [min]="currentDate">
+                <input matStartDate placeholder="Начало" [(ngModel)]="data.startDate">
+                <input matEndDate placeholder="Край" [(ngModel)]="data.endDate">
+            </mat-date-range-input>
+            <mat-icon matSuffix class="text-dark-blue cursor-pointer"
+                (click)="openDatePicker()">calendar_today</mat-icon>
+            <mat-date-range-picker #picker></mat-date-range-picker>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" [matMenuTriggerFor]="peopleMenu" class="input-3">
+            <input matInput [(ngModel)]="'Гости '+ data.people + ' • Стаи ' + data.rooms">
+            <mat-icon matSuffix class="text-dark-blue cursor-pointer">people</mat-icon>
+        </mat-form-field>
+
+        <mat-menu #peopleMenu="matMenu" xPosition="before" [overlapTrigger]="false" class="menu">
+            <div class="pt-10 pb-10 pr-10 pl-10">
+                <div (click)="$event.stopPropagation()" class="display-flex items-center content-between mb-20">
+                    <p class="mr-20 font text-index">Гости</p>
+                    <div>
+                        <span class="input-number-decrement" (click)="decrementGuests()">–</span>
+                        <input class="input-number" type="text" [(ngModel)]="data.people" [min]="1">
+                        <span class="input-number-increment" (click)="incrementGuests()">+</span>
+                    </div>
+                </div>
+                <div (click)="$event.stopPropagation()" class="display-flex items-center content-between">
+                    <p class="mr-20 font text-index">Стаи</p>
+                    <div>
+                        <span class="input-number-decrement" (click)="decrementRooms()">–</span>
+                        <input class="input-number" type="text" [(ngModel)]="data.rooms" [min]="1">
+                        <span class="input-number-increment" (click)="incrementRooms()">+</span>
+                    </div>
+                </div>
+            </div>
+        </mat-menu>
+
+        <button (click)="search()" class="input-4 button" mat-raised-button color="primary">Търси</button>
+    </div>
+
+    <div class="display-flex gap-2 flex-wrap">
+        <div class="criteria-container">
+          <div  *ngIf="accommodations.length > 1">
+            <h2 class="filter-heading text-dark-blue mb-20">Сортирай по</h2>
+            <mat-form-field appearance="outline" class="width-100">
+              <mat-label>Подреди по</mat-label>
+              <mat-select (valueChange)="sort($event)">
+                <mat-option value="nameAscending">Име (възходящ ред)</mat-option>
+                <mat-option value="nameDescending">Име (низходящ ред)</mat-option>
+                <mat-option value="priceAscending">Цена (възходящ ред)</mat-option>
+                <mat-option value="priceDescending">Цена (низходящ ред)</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <mat-divider class="mt-20 mb-20" *ngIf="accommodations.length > 1"></mat-divider>
+
+            <div  *ngIf="accommodations.length > 1">
+                <h2 class="filter-heading text-dark-blue mb-20">Ценови диапазон</h2>
+                <div class="display-flex gap-05 width-100">
+                    <mat-form-field appearance="outline">
+                        <mat-label>От (лв.)</mat-label>
+                        <input matInput [(ngModel)]="this.filters.minPrice">
+                    </mat-form-field>
+                    <mat-form-field appearance="outline">
+                        <mat-label>До (лв.)</mat-label>
+                        <input matInput [(ngModel)]="this.filters.maxPrice">
+                    </mat-form-field>
+                </div>
+                <mat-slider [min]="priceStartValue" [max]="priceEndValue" color="accent" class="width-100 slider">
+                    <input matSliderStartThumb [(ngModel)]="this.filters.minPrice">
+                    <input matSliderEndThumb [(ngModel)]="this.filters.maxPrice">
+                </mat-slider>
+            </div>
+
+            <mat-divider class="mt-20 mb-20" *ngIf="accommodations.length > 1"></mat-divider>
+
+            <div>
+                <h2 class="filter-heading text-dark-blue mb-20">Тип обект</h2>
+                <div class="display-flex flex-column gap-05">
+                    <mat-checkbox color="accent" (change)="typeChange($event, type.id)" *ngFor="let type of displayedAccommodationTypesList">{{ type.name }}</mat-checkbox>
+                    <a (click)="toggleShowMoreTypes()">
+                        <p class="text-light-blue text-rigth cursor-pointer ml-20">{{ showMoreTypes ? 'Виж по-малко' : 'Виж повече' }}</p>
+                    </a>
+                </div>
+            </div>
+
+            <mat-divider class="mt-20 mb-20"></mat-divider>
+
+            <div>
+                <h2 class="filter-heading text-dark-blue mb-20">Удобства и достъпност</h2>
+                <div class="display-flex flex-column gap-05">
+                    <mat-checkbox color="accent" [(ngModel)]="filters.hasParking">Паркинг</mat-checkbox>
+                    <mat-checkbox color="accent" [(ngModel)]="filters.hasPosTerminal">POS терминал</mat-checkbox>
+                    <mat-checkbox color="accent" [(ngModel)]="filters.acceptPets">Домашни любимци</mat-checkbox>
+                    <mat-checkbox color="accent" (change)="facilityChange($event, amenity)" *ngFor="let amenity of displayedFilterAmenities">{{ amenity }}</mat-checkbox>
+                    <a (click)="toggleShowMoreAmenities()">
+                        <p class="text-light-blue text-rigth cursor-pointer ml-20">{{ showMoreAmenities ? 'Виж по-малко' : 'Виж повече' }}</p>
+                    </a>
+                </div>
+            </div>
+
+            <mat-divider class="mt-20 mb-20"></mat-divider>
+
+            <div>
+                <h2 class="filter-heading text-dark-blue mb-20">Звезди</h2>
+                <div aria-label="Избери 5-звездна оценка" class="display-flex gap-05 flex-wrap">
+                    <mat-checkbox (change)="starsChange($event, 1)">1 <i class="fa-solid fa-star text-accent"></i></mat-checkbox>
+                    <mat-checkbox (change)="starsChange($event, 2)">2 <i class="fa-solid fa-star text-accent"></i></mat-checkbox>
+                    <mat-checkbox (change)="starsChange($event, 3)">3 <i class="fa-solid fa-star text-accent"></i></mat-checkbox>
+                    <mat-checkbox (change)="starsChange($event, 4)">4 <i class="fa-solid fa-star text-accent"></i></mat-checkbox>
+                    <mat-checkbox (change)="starsChange($event, 5)">5 <i class="fa-solid fa-star text-accent"></i></mat-checkbox>
+                </div>
+            </div>
+
+            <mat-divider class="mt-20 mb-20"></mat-divider>
+
+            <button mat-raised-button color="primary" class="mb-20" (click)="filter()">Приложи</button>
+        </div>
+
+        <div class="results-container display-flex flex-column gap-1">
+            <p class="result-subheading">{{ accommodations.length }} {{ accommodations.length === 1 ? 'обект' : 'обекта' }}</p>
+            <div class="width-100 result-container display-flex gap-1 flex-wrap cursor-pointer" *ngFor="let accommodation of accommodations" (click)="details(accommodation.id)">
+                <div class="result-image-section">
+                    <img class="result-image" [src]="accommodation.coverPhotoUrl" />
+                </div>
+                <div class="result-info-section display-flex flex-column content-between">
+                  <div>
+                    <div class="display-flex gap-05 items-center">
+                      <h3 class="result-heading mt-10 mb-10 text-dark-blue">{{ accommodation.name}}</h3>
+                      <div class="star-rating">
+                        <mat-icon *ngFor="let i of [].constructor(accommodation.stars)">star</mat-icon>
+                      </div>
+                    </div>
+                    <p class="result-subheading mb-10">{{ accommodation.type.name }}</p>
+                    <p class="result-subheading text-dark-blue mb-10"><i class="fa-solid fa-location-dot text-dark-blue"></i> {{ accommodation.town }}</p>
+                  </div>
+
+                    <div class="display-flex content-between mb-20">
+                        <div class="display-flex gap-1 flex-wrap content-between text-dark-blue">
+                            <div class="display-flex gap-05 amenity-container" *ngIf="accommodation.hasParking">
+                                <i class="fa-solid fa-square-parking"></i>
+                                <p class="amenity-label">Паркинг</p>
+                            </div>
+                            <div class="display-flex gap-05 amenity-container" *ngIf="accommodation.hasPosTerminal">
+                                <i class="fa-solid fa-credit-card"></i>
+                                <p class="amenity-label">POS терминал</p>
+                            </div>
+                            <div class="display-flex gap-05 amenity-container" *ngIf="accommodation.acceptOnlinePayments">
+                                <i class="fa-solid fa-credit-card"></i>
+                                <p class="amenity-label">Плащане през Гостополис</p>
+                            </div>
+                            <div class="display-flex gap-05 amenity-container" *ngIf="accommodation.acceptPets">
+                                <i class="fa-solid fa-dog"></i>
+                                <p class="amenity-label">Домашни любимци</p>
+                            </div>
+                        </div>
+                        <div class="text-right pr-20">
+                            <h3 class="price-label ml-10 text-accent">от {{ accommodation.cheapestOption }} лв.</h3>
+                            <p class="price-label-details ml-10">{{ calculateNights() }} нощувки, {{ data.people }} гости, {{ data.rooms }} стаи</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

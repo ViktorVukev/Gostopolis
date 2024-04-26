@@ -1,0 +1,12 @@
+<h1 mat-dialog-title>Управлявай известия</h1>
+
+<form method="post" [formGroup]="updateForm" (ngSubmit)="update()">
+    <div mat-dialog-content class="display-flex flex-column gap-1">
+        <mat-slide-toggle color="primary" formControlName="loginNotification">Влизания в профила</mat-slide-toggle>
+    </div>
+
+    <div mat-dialog-actions align="end">
+        <button mat-button mat-dialog-close>Отказ</button>
+        <button mat-button cdkFocusInitial mat-dialog-close type="submit">Запази</button>
+    </div>
+</form>

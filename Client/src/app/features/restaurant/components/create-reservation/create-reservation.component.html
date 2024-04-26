@@ -1,0 +1,56 @@
+<div class="wrapper main-mtb display-flex gap-1 flex-wrap">
+    <div class="display-flex flex-column gap-1 info-section">
+        <div class="section">
+            <div class="section-header pt-10 pb-10 pl-20">
+                <h2 class="section-heading text-dark-blue"><i class="fa-solid fa-user mr-10"></i> Вашите данни</h2>
+            </div>
+            <div class="pt-10 pb-10 pl-20 pr-20">
+                <p class="form-label mt-10 mb-20">Необходима е информация за един от гостите при създаване на
+                    резервация.
+                </p>
+                <div class="display-flex flex-column mt-10">
+                  <mat-form-field appearance="outline">
+                    <mat-label>Име</mat-label>
+                    <input matInput placeholder="Име" [(ngModel)]="user.firstName" disabled>
+                  </mat-form-field>
+                  <mat-form-field appearance="outline">
+                    <mat-label>Фамилия</mat-label>
+                    <input matInput placeholder="Фамилия" [(ngModel)]="user.lastName" disabled>
+                  </mat-form-field>
+                  <mat-form-field appearance="outline">
+                    <mat-label>Email</mat-label>
+                    <input matInput type="email" placeholder="Email" [(ngModel)]="user.email" disabled>
+                  </mat-form-field>
+                  <mat-form-field appearance="outline">
+                    <mat-label>Телефонен номер: </mat-label>
+                    <input matInput type="tel" [(ngModel)]="user.phoneNumber" disabled>
+                  </mat-form-field>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-right">
+            <button mat-raised-button color="primary" (click)="reserve()">Резервирай</button>
+        </div>
+
+    </div>
+
+    <div class="section pt-20 pb-20 pr-20 pl-20 property-section">
+        <div class="property-image">
+            <img [src]="restaurant.coverPhotoUrl"/>
+        </div>
+      <h3 class="property-heading mt-20 text-dark-blue">{{ restaurant.type.name }} "{{ restaurant.name }}"</h3>
+      <a target="_blank" [href]="restaurant.locationUrl"><p class="property-subtitle">{{ restaurant.address }}</p></a>
+      <div class="star-rating mt-20 mb-20">
+        <mat-icon *ngFor="let i of [].constructor(restaurant.stars)">star</mat-icon>
+      </div>
+
+        <p class="property-subtitle"><span class="bold">Дата:</span> {{ this.data.startTime | date: 'dd.MM.yyyy'}} г.</p>
+        <p class="property-subtitle"><span class="bold">Час:</span> {{ this.data.startTime | date: 'HH:mm' }}</p>
+        <p class="property-subtitle"><span class="bold">Брой гости:</span> {{ this.data.people }}</p>
+
+        <mat-divider class="mt-20 mb-20"></mat-divider>
+
+      <p class="mb-10 text-gray" *ngFor="let table of tableConfiguration">1 x Маса за {{ table.capacity === 1 ? table.capacity : table.capacity + '-ма' }} ({{ table.isOutdoor ? 'Външна' : 'Вътрешна'}}, {{ table.isSmokingAllowed ? 'За пушачи' : 'За непушачи'}})</p>
+    </div>
+</div>

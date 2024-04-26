@@ -1,0 +1,219 @@
+<div class="wrapper">
+  <h1 class="heading text-center text-dark-blue mt-40 mb-40">Направете първата стъпка към дигитализирането на <span
+    class="text-accent">вашия бизнес</span></h1>
+  <mat-stepper labelPosition="bottom" #stepper>
+    <form [formGroup]="createForm" (ngSubmit)="create()" method="post" enctype="multipart/form-data">
+      <mat-step>
+        <ng-template matStepLabel>Категория</ng-template>
+        <h2 class="form-heading text-center text-dark-blue mt-40 mb-40">Какво искате да добавите?</h2>
+        <div class="display-flex category-div">
+          <button class="width-50 display-flex items-center option mr-20 cursor-pointer" matStepperNext
+                  (click)="selectCategory('accommodation')" [ngClass]="{'selected-option': selectedCategory == 'accommodation'}">
+            <i class="fa-solid fa-hotel fa-2xl mr-20 text text-dark-blue"></i>
+            <div>
+              <h3 class="option-heading">Място за настаняване</h3>
+              <p class="option-subtitle">Хотел, къща за гости, апартамент под наем</p>
+            </div>
+          </button>
+          <button class="width-50 display-flex items-center option cursor-pointer" matStepperNext
+                  (click)="selectCategory('restaurant')" [ngClass]="{'selected-option': selectedCategory == 'restaurant'}">
+            <i class="fa-solid fa-utensils fa-2xl mr-20 text text-dark-blue"></i>
+            <div>
+              <h3 class="option-heading">Заведение</h3>
+              <p class="option-subtitle">Ресторант, кафе, бар, нощно заведение</p>
+            </div>
+          </button>
+        </div>
+      </mat-step>
+      <mat-step>
+        <ng-template matStepLabel>Тип</ng-template>
+        <h2 class="form-heading text-center text-dark-blue mt-40 mb-40">Кое от изброените описва най-добре мястото?</h2>
+
+        <ng-container *ngIf="selectedCategory !== 'restaurant'">
+          <h2 *ngIf="selectedCategory === ''" class="form-heading text-center text-accent mt-40 mb-40">Място за настаняване</h2>
+          <div class="width-60 display-flex content-between type-options-container m0-auto">
+            <button class="inline width-30 option type-option cursor-pointer mb-20" (click)="selectType(type.id, 'accommodation')" matStepperNext
+                    *ngFor="let type of accommodationTypes" [ngClass]="{'selected-option': createForm.value?.typeId == type.id}">
+              <span class="type-option-subtitle text-dark-blue">{{ type.name }}</span>
+              <span class="type-option-subtitle text-dark-blue ml-10" [matTooltip]="type.description" matTooltipPosition="above" ><i class="fa-solid fa-circle-info"></i></span>
+            </button>
+          </div>
+        </ng-container>
+        <ng-container *ngIf="selectedCategory !== 'accommodation'">
+          <h2 *ngIf="selectedCategory === ''" class="form-heading text-center text-accent mt-40 mb-40">Заведение</h2>
+          <div class="width-60 display-flex content-between type-options-container m0-auto">
+            <button class="inline width-30 option type-option cursor-pointer mb-20" (click)="selectType(type.id, 'restaurant')" matStepperNext
+                    *ngFor="let type of restaurantTypes" [ngClass]="{'selected-option': createForm.value?.typeId == type.id}">
+              <span class="type-option-subtitle text-dark-blue">{{ type.name }}</span>
+              <span class="type-option-subtitle text-dark-blue ml-10" [matTooltip]="type.description" matTooltipPosition="above" ><i class="fa-solid fa-circle-info"></i></span>
+            </button>
+          </div>
+        </ng-container>
+
+        <div class="display-flex content-end">
+          <button mat-button matStepperPrevious>Обратно</button>
+        </div>
+      </mat-step>
+      <mat-step>
+        <ng-template matStepLabel>Данни</ng-template>
+        <h2 class="form-heading text-center text-dark-blue mt-40 mb-20">Официални данни</h2>
+        <p class="width-60 name-subtitle text-center m0-auto">Данни, които използвате за данъчни цели или държавна регистрация. Това може да бъдат името на фирма или физическо лице и универсален идентификационен код (УИК) или единен идентификационен код (ЕИК). <br /> Необходимо е да се уверим, че вие притежавате този обект. За тази цел може да прикачите такъв документ, който считате за подходящ.</p>
+        <div class="display-flex content-center items-center flex-column">
+
+          <mat-form-field appearance="outline" class="width-40 name-input mt-40">
+            <input matInput type="text" placeholder="Име на обекта" formControlName="name" required>
+            <mat-error *ngIf="name?.touched && name?.errors?.['required']">Полето е задължително.</mat-error>
+            <mat-error *ngIf="name?.touched && name?.errors?.['minlength']">Въведете поне 2 символа.</mat-error>
+            <mat-error *ngIf="name?.touched && name?.errors?.['maxlength']">Въведете не повече от 50 символа.</mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="width-40 name-input">
+            <input matInput type="text" placeholder="УИК/ЕИК" formControlName="identificationNumber" required>
+            <mat-error *ngIf="identificationNumber?.touched && identificationNumber?.errors?.['required']">Полето е задължително.</mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="width-40 name-input file-field">
+            <mat-toolbar>
+              <input matInput [value]="fileName" readonly name="name" />
+            </mat-toolbar>
+            <input type="file" accept="image/*,.pdf" id="uploadFile" (change)="uploadFile($event)" />
+          </mat-form-field>
+
+        </div>
+        <div class="display-flex content-between mt-20">
+          <button mat-button matStepperPrevious>Обратно</button>
+          <button mat-raised-button color="primary" matStepperNext>Напред</button>
+        </div>
+      </mat-step>
+      <mat-step>
+        <ng-template matStepLabel>Локация</ng-template>
+        <h2 class="form-heading text-center text-dark-blue mt-40 mb-20">Къде е разположен вашият обект?</h2>
+
+        <div>
+          <input matInput type="text" class="my-search-box" (keydown.enter)="$event.preventDefault()" placeholder="Въведете адрес..." #search/>
+        </div>
+
+        <google-map
+          #myGoogleMap
+          height="20rem"
+          width="100%"
+          [zoom]="zoom"
+          [center]="center"
+          [options]="options"
+        ></google-map>
+        <div class="display-flex content-between mt-20">
+          <button mat-button matStepperPrevious>Обратно</button>
+          <button mat-raised-button color="primary" matStepperNext>Напред</button>
+        </div>
+      </mat-step>
+      <mat-step>
+        <ng-template matStepLabel>Подробности</ng-template>
+        <h2 class="form-heading text-center text-dark-blue mt-40 mb-40">Разкажете ни повече за вашия обект</h2>
+        <div>
+          <div class="display-flex details-flex gap mb-20">
+            <div class="details-form-container">
+              <p class="name-subtitle label mb-1rem">Обща информация</p>
+              <div class="display-flex content-center details-container">
+                <div class="display-flex items-center">
+                  <igc-rating (igcChange)="ratingChanged($event);" min="1" max="5"></igc-rating>
+                </div>
+
+                <div class="display-flex items-center">
+                  <mat-slide-toggle formControlName="hasParking" color="primary">Паркинг</mat-slide-toggle>
+                </div>
+
+                <div class="display-flex items-center">
+                  <mat-slide-toggle formControlName="hasPosTerminal" color="primary">POS терминал</mat-slide-toggle>
+                </div>
+
+                <div class="display-flex items-center">
+                  <mat-slide-toggle formControlName="acceptOnlinePayments" color="primary">Плащане през нашата платформа</mat-slide-toggle>
+                </div>
+
+                <div class="display-flex items-center">
+                  <mat-slide-toggle formControlName="acceptPets" color="primary">Домашни любимци</mat-slide-toggle>
+                </div>
+
+                <mat-form-field appearance="outline">
+                  <mat-label>Езици, говорени от персонала</mat-label>
+                  <mat-chip-grid #chipGrid aria-label="Избор на езици">
+                    @for (language of languages; track language) {
+                      <mat-chip-row (removed)="removeLanguage(language)">
+                        {{ language }}
+                        <button matChipRemove [attr.aria-label]="'премахни ' + language">
+                          <mat-icon>cancel</mat-icon>
+                        </button>
+                      </mat-chip-row>
+                    }
+                  </mat-chip-grid>
+                  <input placeholder="Нов език..." #languageInput [formControl]="languageCtrl"
+                    [matChipInputFor]="chipGrid" [matAutocomplete]="auto"
+                    [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                    (matChipInputTokenEnd)="addLanguage($event)" formControlName="languages">
+                  <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selectedLanguage($event)">
+                    @for (language of filteredLanguages | async; track language) {
+                      <mat-option [value]="language">{{ language }}</mat-option>
+                    }
+                  </mat-autocomplete>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                  <mat-label>Телефон</mat-label>
+                  <span class="text-gray" matTextPrefix>+359 &nbsp;</span>
+                  <input type="tel" formControlName="phoneNumber" matInput>
+                </mat-form-field>
+
+              </div>
+            </div>
+            <div class="quill-editor-container">
+              <p class="name-subtitle label mb-1rem">Описание</p>
+              <quill-editor formControlName="description" placeholder="Детайли за вашия обект..." class="quill-editor">
+              </quill-editor>
+            </div>
+          </div>
+        </div>
+
+        <div class="display-flex content-between">
+          <button mat-button matStepperPrevious>Обратно</button>
+          <button mat-raised-button color="primary" matStepperNext>Напред</button>
+        </div>
+      </mat-step>
+
+      <mat-step>
+        <ng-template matStepLabel>Галерия</ng-template>
+        <h2 class="form-heading text-center text-dark-blue mt-40 mb-20">Покажете вашия обект</h2>
+        <p class="width-60 name-subtitle text-center m0-auto">Потребителите взаимодействат със снимките повече от която и да е друга част от вашето описание. Правилните снимки имат значение. Препоръчваме да прикачите колкото можете повече снимки, но задължително са необходими 5 на брой.</p>
+
+        <div class="display-flex gap content-center mt-20 gallery-upload-container">
+          <mat-form-field class="full-width" appearance="outline" (click)="fileInput.click()">
+            <mat-label>Прикачи изображения</mat-label>
+            <input matInput disabled>
+            <button mat-icon-button matSuffix>
+              <mat-icon>attach_file</mat-icon>
+            </button>
+            <input hidden #fileInput multiple type="file" (change)="onSelect($event)" accept="image/*">
+          </mat-form-field>
+        </div>
+
+        <div class="width-60 gallery m0-auto mt-20">
+          <div class="gallery-item" *ngFor="let photo of photos; let i = index">
+            <img [src]="photo">
+
+            <div class="transparent-box display-flex items-center content-center gap-1">
+              <i *ngIf="index !== i" class="fa-solid fa-book set-as-primary-button text-white cursor-pointer" matTooltip="Задай по подразбиране" (click)="setCoverPhoto(i)"></i>
+              <i class="fa-solid fa-trash delete-button text-accent cursor-pointer" matTooltip="Изтрий" (click)="onDelete(i)"></i>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="display-flex content-between">
+          <button mat-button matStepperPrevious>Обратно</button>
+          <button mat-raised-button color="primary" (click)="create()">Напред</button>
+        </div>
+
+      </mat-step>
+    </form>
+  </mat-stepper>
+</div>
+

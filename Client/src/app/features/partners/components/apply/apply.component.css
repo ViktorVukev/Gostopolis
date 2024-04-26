@@ -1,0 +1,85 @@
+.background {
+  background-image: url('../../../../../assets/images/request-background.png');
+  background-size: cover;
+}
+
+.content-container {
+  padding-top: 120px;
+  margin: 0 auto;
+}
+
+h1 {
+  font-weight: 700;
+  font-size: 26px;
+}
+
+p {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 18px;
+  color: #5e6f73;
+}
+
+/* File upload section */
+.mat-mdc-form-field {
+  margin: 40px 0;
+  width: 70%;
+}
+
+.mat-toolbar-single-row {
+  height: auto !important;
+  background: transparent;
+}
+
+.mat-toolbar-single-row button {
+  width: 200px;
+}
+
+#uploadFile {
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  z-index: 9;
+  opacity: 0;
+  height: 100%;
+  cursor: pointer;
+  position: absolute;
+}
+
+/* Responsive design */
+
+/* Small devices (landscape phones, 576px and up) */
+@media (max-width: 576px) {
+  /* Background section */
+  .background {
+    background-size: contain;
+    background-repeat: no-repeat;
+  }
+
+  .content-container {
+    width: 80%;
+    padding-top: 50px;
+  }
+
+  .field-margin {
+    margin-bottom: 20px;
+  }
+
+  .mat-mdc-form-field {
+    margin: 40px 0;
+    width: 100%;
+  }
+
+  .mat-toolbar-single-row button {
+    width: 100px;
+  }
+
+  /* Content section */
+  h1 {
+    font-size: 23px;
+  }
+
+  p {
+    font-size: 13px;
+  }
+}

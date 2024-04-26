@@ -1,0 +1,164 @@
+<section class="explore wrapper main-mtb">
+  <div class="overlay absolute"></div>
+  <div class="explore-container absolute">
+    <mat-tab-group fitInkBarToContent mat-stretch-tabs="false" mat-align-tabs="start" animationDuration="0ms"
+      id="search-tabs-group">
+      <mat-tab label="Хотели">
+        <div>
+          <form  class="card-content gap-1 mt-10 items-baseline" [formGroup]="searchForm" (ngSubmit)="searchAccommodation()">
+          <mat-form-field appearance="outline" class="input-1">
+            <input matInput placeholder="Накъде пътуваш?" formControlName="town">
+            <mat-icon matSuffix class="text-dark-blue cursor-pointer">place</mat-icon>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="input-2">
+            <mat-date-range-input [rangePicker]="picker" [min]="currentDate">
+              <input matStartDate placeholder="Начало" formControlName="startDate">
+              <input matEndDate placeholder="Край" formControlName="endDate">
+            </mat-date-range-input>
+            <mat-icon matSuffix class="text-dark-blue cursor-pointer"
+              (click)="openDatePicker()">calendar_today</mat-icon>
+            <mat-date-range-picker #picker></mat-date-range-picker>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" [matMenuTriggerFor]="peopleMenu" class="input-3">
+            <input matInput [(ngModel)]="'Гости '+valueGuests+' • Стаи '+valueRooms" [ngModelOptions]="{standalone: true}">
+            <mat-icon matSuffix class="text-dark-blue cursor-pointer">people</mat-icon>
+          </mat-form-field>
+
+          <mat-menu #peopleMenu="matMenu" yPosition="below" [overlapTrigger]="false" class="menu">
+            <div class="pt-10 pb-10 pr-10 pl-10">
+              <div (click)="$event.stopPropagation()" class="display-flex items-center content-between mb-20">
+                <p class="mr-20 font text-index">Гости</p>
+                <div>
+                  <span class="input-number-decrement" (click)="decrementGuests()">–</span>
+                  <input class="input-number" type="text" [(ngModel)]="valueGuests" [min]="1" [ngModelOptions]="{standalone: true}">
+                  <span class="input-number-increment" (click)="incrementGuests()">+</span>
+                </div>
+              </div>
+              <div (click)="$event.stopPropagation()" class="display-flex items-center content-between">
+                <p class="mr-20 font text-index">Стаи</p>
+                <div>
+                  <span class="input-number-decrement" (click)="decrementRooms()">–</span>
+                  <input class="input-number" type="text" [(ngModel)]="valueRooms" [min]="1" [ngModelOptions]="{standalone: true}">
+                  <span class="input-number-increment" (click)="incrementRooms()">+</span>
+                </div>
+              </div>
+            </div>
+          </mat-menu>
+
+          <button type="submit" class="input-4 button" mat-raised-button color="primary">Търси</button>
+          </form>
+        </div>
+
+      </mat-tab>
+      <mat-tab label="Заведения">
+        <div>
+          <form  class="card-content gap-1 mt-10 items-baseline" [formGroup]="searchForm" (ngSubmit)="searchRestaurant()">
+            <mat-form-field appearance="outline" class="input-1">
+              <input matInput placeholder="Къде ще хапваш?" formControlName="town">
+              <mat-icon matSuffix class="text-dark-blue cursor-pointer">place</mat-icon>
+            </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <input matInput [matDatepicker]="restaurantDatePicker" placeholder="Избери ден" [min]="currentDate" formControlName="startDate">
+            <mat-datepicker-toggle class="text-dark-blue" matIconSuffix
+              [for]="restaurantDatePicker"></mat-datepicker-toggle>
+            <mat-datepicker #restaurantDatePicker></mat-datepicker>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-select placeholder="В колко часа?" formControlName="endDate">
+              <mat-option *ngFor="let option of timeOptions" [value]="option">
+                {{ option }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" [matMenuTriggerFor]="tableMenu" class="input-3">
+            <input matInput [(ngModel)]="'Гости '+valueRestaurantGuests+' • Маси '+valueTables" [ngModelOptions]="{ standalone: true }">
+            <mat-icon matSuffix class="text-dark-blue cursor-pointer">people</mat-icon>
+          </mat-form-field>
+
+          <mat-menu #tableMenu="matMenu" yPosition="below" [overlapTrigger]="false" class="menu">
+            <div class="pt-10 pb-10 pr-10 pl-10">
+              <div (click)="$event.stopPropagation()" class="display-flex items-center content-between mb-20">
+                <p class="mr-20 font text-index">Гости</p>
+                <div>
+                  <span class="input-number-decrement" (click)="decrementRestaurantGuests()">–</span>
+                  <input class="input-number" type="text" [(ngModel)]="valueRestaurantGuests" [min]="1" [ngModelOptions]="{ standalone: true }">
+                  <span class="input-number-increment" (click)="incrementRestaurantGuests()">+</span>
+                </div>
+              </div>
+              <div (click)="$event.stopPropagation()" class="display-flex items-center content-between">
+                <p class="mr-20 font text-index">Маси</p>
+                <div>
+                  <span class="input-number-decrement" (click)="decrementTables()">–</span>
+                  <input class="input-number" type="text" [(ngModel)]="valueTables" [min]="1" [ngModelOptions]="{ standalone: true }">
+                  <span class="input-number-increment" (click)="incrementTables()">+</span>
+                </div>
+              </div>
+            </div>
+          </mat-menu>
+
+          <button type="submit" class="input-4 button" mat-raised-button color="primary">Търси</button>
+          </form>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+</section>
+
+<section class="wrapper main-mtb">
+  <h2 class="places-section-title text-dark-blue mb-40">Преоткрий места около теб</h2>
+  <div class="display-flex flex-wrap gap-1 items-center content-between">
+    <div class="place-container display-flex flex-column items-center gap-05 content-center"
+      *ngFor="let place of places">
+      <div class="place-circle display-flex content-center items-center">
+        <i [ngClass]="'fa-solid fa-2xl text-light-blue ' + place.iconClass"></i>
+      </div>
+      <p>{{ place.name }}</p>
+    </div>
+  </div>
+</section>
+
+
+<section class="wrapper main-mtb">
+  <h2 class="places-section-title text-dark-blue mb-40">Цифрите говорят</h2>
+  <div class="display-flex content-between flex-wrap gap-1">
+    <div *ngFor="let counter of counters; let i = index" class="counter-card display-flex flex-column gap-1 content-center items-center">
+      <h3 class="text-accent counter-title" #counterValue>{{ counter.count }}</h3>
+      <p class="counter-subtitle text-dark-blue">{{ counter.title }}</p>
+    </div>
+  </div>
+</section>
+
+<section class="call-to-action wrapper main-mtb mt-40">
+  <div class="overlay absolute"></div>
+  <div class="call-to-action-container display-flex flex-column absolute">
+    <h2 class="action-title">Почивка с приятели или петък вечер навън</h2>
+    <p class="action-subtitle mt-10 mb-20">Намери най-подходящото за теб заведение или място за настаняване. Резервирай
+      бързо
+      и спести време с Гостополис.</p>
+    <a [routerLink]="['/auth/login']">
+      <button type="button" class="button text-white bold" mat-raised-button color="accent">Започни сега</button>
+    </a>
+  </div>
+</section>
+
+<section class="wrapper main-mtb">
+  <div class="display-flex flex-wrap">
+    <div class="width-60 display-flex flex-column content-center">
+      <h2 class="places-section-title text-dark-blue mb-40">Имате нужда от помощ?</h2>
+      <p class="width-90 help-text mb-40">
+        Независимо дали сте клиент или партньор, ние ще отговорим на вашите въпроси. В нашия помощен център ще откриете отговори на често задавани въпроси и ще получите необходимите съвети.
+      </p>
+      <a [routerLink]="['/user-manual']">
+        <button type="button" class="button text-white bold" mat-raised-button color="accent">Към помощен център</button>
+      </a>
+    </div>
+    <div class="width-40 display-flex content-center items-center">
+      <img src="../../../../../assets/images/help-image.png" class="width-90" />
+    </div>
+  </div>
+</section>

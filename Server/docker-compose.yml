@@ -1,0 +1,152 @@
+version: "3.8"
+
+services:
+    data:
+        container_name: sqlserver
+        image: mcr.microsoft.com/mssql/server
+        ports:
+            - "1433:1433"
+        environment:
+            - ACCEPT_EULA=Y
+            - SA_PASSWORD=yourStrongPassword12!@
+        volumes: 
+            - sqldata:/home/data/mssql
+        networks: 
+            - gostopolis-network
+
+    messages:
+        container_name: rabbitmq
+        image: rabbitmq:3-management
+        ports:
+            - "15672:15672"
+            - "5672:5672"
+        hostname: "rabbitmq"
+        environment:
+            - RABBITMQ_ERLANG_COOKIE=Rand0mR4bbitMqCo0k1e
+            - RABBITMQ_DEFAULT_USER=rabbitmq
+            - RABBITMQ_DEFAULT_PASS=rabbitmq
+        networks: 
+            - gostopolis-network
+
+    identity:
+        container_name: identity
+        image: gostopolis.azurecr.io/identity
+        build:
+            dockerfile: ./Gostopolis.Identity/Dockerfile
+        ports: 
+            - "5001:8080"
+        env_file: Gostopolis/common.env
+        environment:
+            - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=Gostopolis.Identity;User Id=sa;Password=yourStrongPassword12!@;MultipleActiveResultSets=true;TrustServerCertificate=true
+            - SENDGRID_API_KEY=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
+        restart: on-failure
+        volumes:
+            - ./.aspnet/identity/DataProtection-Keys:/root/.aspnet/DataProtection-Keys
+        networks: 
+            - gostopolis-network
+        depends_on:
+            - data
+
+    accommodations:
+        container_name: accommodations
+        image: gostopolis.azurecr.io/accommodations
+        build:
+            dockerfile: ./Gostopolis.Accommodations/Dockerfile
+        ports: 
+            - "5005:8080"
+        env_file: Gostopolis/common.env
+        environment:
+            - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=Gostopolis.Accommodations;User Id=sa;Password=yourStrongPassword12!@;MultipleActiveResultSets=true;TrustServerCertificate=true
+        restart: on-failure
+        volumes:
+            - ./.aspnet/identity/DataProtection-Keys:/root/.aspnet/DataProtection-Keys
+        networks: 
+            - gostopolis-network
+        depends_on:
+            - data
+
+    restaurants:
+        container_name: restaurants
+        image: gostopolis.azurecr.io/restaurants
+        build:
+            dockerfile: ./Gostopolis.Restaurants/Dockerfile
+        ports: 
+            - "5003:8080"
+        env_file: Gostopolis/common.env
+        environment:
+            - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=Gostopolis.Restaurants;User Id=sa;Password=yourStrongPassword12!@;MultipleActiveResultSets=true;TrustServerCertificate=true
+        restart: on-failure
+        volumes:
+            - ./.aspnet/identity/DataProtection-Keys:/root/.aspnet/DataProtection-Keys
+        networks: 
+            - gostopolis-network
+        depends_on:
+            - data
+    
+    statistics:
+        container_name: statistics
+        image: gostopolis.azurecr.io/statistics
+        build:
+            dockerfile: ./Gostopolis.Statistics/Dockerfile
+        ports: 
+            - "5009:8080"
+        env_file: Gostopolis/common.env
+        environment:
+            - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=Gostopolis.Statistics;User Id=sa;Password=yourStrongPassword12!@;MultipleActiveResultSets=true;TrustServerCertificate=true
+        restart: on-failure
+        volumes:
+            - ./.aspnet/identity/DataProtection-Keys:/root/.aspnet/DataProtection-Keys
+        networks: 
+            - gostopolis-network
+        depends_on:
+            - data
+
+    schedule:
+        container_name: schedule
+        image: gostopolis.azurecr.io/schedule
+        build:
+            dockerfile: ./Gostopolis.Schedule/Dockerfile
+        ports: 
+            - "5011:8080"
+        env_file: Gostopolis/common.env
+        environment:
+            - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=Gostopolis.Schedule;User Id=sa;Password=yourStrongPassword12!@;MultipleActiveResultSets=true;TrustServerCertificate=true
+        restart: on-failure
+        volumes:
+            - ./.aspnet/identity/DataProtection-Keys:/root/.aspnet/DataProtection-Keys
+        networks: 
+            - gostopolis-network
+        depends_on:
+            - data
+
+    admin:
+        container_name: admin
+        image: gostopolis.azurecr.io/admin
+        build:
+            dockerfile: ./Gostopolis.Admin/Dockerfile
+        ports: 
+            - "5007:8080"
+        env_file: Gostopolis/common.env
+        restart: on-failure
+        volumes:
+            - ./.aspnet/identity/DataProtection-Keys:/root/.aspnet/DataProtection-Keys
+        networks: 
+            - gostopolis-network
+
+    health:
+        container_name: health
+        image: gostopolis.azurecr.io/health
+        build:
+            dockerfile: ./Gostopolis.Watchdog/Dockerfile
+        ports: 
+            - "5013:8080"
+        env_file: Gostopolis/common.env
+        restart: on-failure
+        volumes:
+            - ./.aspnet/identity/DataProtection-Keys:/root/.aspnet/DataProtection-Keys
+        networks: 
+            - gostopolis-network
+volumes:
+    sqldata:
+networks: 
+    gostopolis-network:

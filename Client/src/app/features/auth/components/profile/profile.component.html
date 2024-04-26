@@ -1,0 +1,107 @@
+<div class="wrapper profile-warpper display-flex content-between pt-40">
+
+    <div class="sidebar">
+        <div class="profile-info-container display-flex content-between items-center">
+            <div>
+                <h1 class="profile-info-title text-dark-blue">Здравейте, {{ user.firstName }} {{ user.lastName }}!</h1>
+                <p class="profile-info-subtitle">{{ user.email }}</p>
+            </div>
+            <div class="img-container cursor-pointer" (click)="openProfileImageDialog()">
+                <div class="relative">
+                    <img [src]="user.imageUrl" class="avatar" alt="avatar-image">
+                    <div class="transparent-box display-flex items-center content-center">
+                        <i class="fa-solid fa-upload upload-image-button text-white"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="spacer"></div>
+
+        <div class="menu display-flex content-between">
+            <div class="menu-item display-flex items-center content-between cursor-pointer" (click)="changeTab('profile')" [ngClass]="{'menu-item-selected': tabId == 'profile'}">
+                <div class="display-flex items-center">
+                    <i class="fa-solid fa-user fa-lg text-dark-blue"></i>
+                    <p class="ml-10 text-dark-blue">Профил</p>
+                </div>
+                <i class="fa-solid fa-angle-right fa-lg text-dark-blue"></i>
+            </div>
+
+            <div class="menu-item display-flex items-center content-between cursor-pointer" (click)="changeTab('communication')" [ngClass]="{'menu-item-selected': tabId == 'communication'}">
+                <div class="display-flex items-center">
+                    <i class="fa-solid fa-envelope fa-lg text-dark-blue"></i>
+                    <p class="ml-10 text-dark-blue">Комуникация</p>
+                </div>
+                <i class="fa-solid fa-angle-right fa-lg text-dark-blue"></i>
+            </div>
+
+            <div class="menu-item display-flex items-center content-between cursor-pointer" (click)="changeTab('security')" [ngClass]="{'menu-item-selected': tabId == 'security'}">
+                <div class="display-flex items-center">
+                    <i class="fa-solid fa-lock fa-lg text-dark-blue"></i>
+                    <p class="ml-10 text-dark-blue">Сигурност</p>
+                </div>
+                <i class="fa-solid fa-angle-right fa-lg text-dark-blue"></i>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="content">
+        <div *ngIf="tabId === 'profile'" >
+            <div class="display-flex label-container content-between items-center mb-20">
+                <h1 class="content-heading text-dark-blue">Обща информация</h1>
+                <p class="edit cursor-pointer" (click)="openNameDialog()">Редактирайте</p>
+            </div>
+            <div class="display-flex content-between">
+                <div class="width-50">
+                    <h2 class="content-subheading text-dark-blue">Име</h2>
+                    <p class="profile-content">{{ user.firstName }}</p>
+                </div>
+                <div class="width-50">
+                    <h2 class="content-subheading text-dark-blue">Фамилия</h2>
+                    <p class="profile-content">{{ user.lastName }}</p>
+                </div>
+            </div>
+
+            <div class="display-flex label-container content-between items-center mt-40 mb-20">
+                <h1 class="content-heading text-dark-blue">Контакти</h1>
+                <p class="edit cursor-pointer" (click)="openContactDialog()">Редактирайте</p>
+            </div>
+            <div class="display-flex content-between">
+                <div class="width-50">
+                    <h2 class="content-subheading text-dark-blue">Имейл</h2>
+                    <p class="profile-content">{{ user.email }}</p>
+                </div>
+                <div class="width-50">
+                    <h2 class="content-subheading text-dark-blue">Телефон</h2>
+                    <p class="profile-content">{{ user.phoneNumber }}</p>
+                </div>
+            </div>
+        </div>
+
+        <div *ngIf="tabId === 'communication'">
+            <div class="display-flex label-container content-between items-center mb-20">
+                <div>
+                    <h1 class="content-heading text-dark-blue mb-10">Управление на известията</h1>
+                    <p>От тук може да управлявате предпочитанията си за имейл известяване.</p>
+                </div>
+                <p class="edit cursor-pointer" (click)="openNotificationsDialog()">Редактирайте</p>
+            </div>
+        </div>
+
+        <div *ngIf="tabId === 'security'">
+            <div class="display-flex label-container content-between items-center mb-20">
+                <div>
+                    <h1 class="content-heading text-dark-blue mb-10">Промяна на парола</h1>
+                    <p>От тук може да управлявате вашия достъп до профила.</p>
+                </div>
+              <button [disabled]="isButtonDisabled" class="edit cursor-pointer" (click)="openPasswordDialog()">
+                Редактирай <span *ngIf="timeRemaining > 0">{{ formatTime(timeRemaining) }}</span>
+              </button>
+            </div>
+        </div>
+
+
+    </div>
+
+</div>

@@ -1,0 +1,67 @@
+.heading {
+    font-weight: 700;
+    font-size: 26px;
+}
+
+.form-heading {
+    font-size: 24px;
+}
+
+.spacer {
+    height: 1rem;
+}
+
+.line {
+    color: #70757a;
+    display: inline-block;
+    margin: 0 10px;
+    vertical-align: middle;
+    width: 1em;
+}
+
+.width-16rem {
+    width: 16rem;
+}
+
+.table-width {
+    max-width: 8rem;    
+}
+
+.table-number-input {
+    font-size: 10pt;
+    border: none;
+}
+
+.table-number-input:focus {
+    outline: none;
+    border: none;
+}
+
+.xmark-icon {
+    padding: 0.5rem;
+}
+
+.gray {
+    color: gray;
+}
+
+.product-width {
+    width: 12rem;
+}
+
+.product-image-container {
+    height: 8rem;
+    overflow: hidden;
+}
+
+.product-image-container img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+@media (max-width: 576px) {
+    .product-width {
+        width: 100%;
+    }
+}

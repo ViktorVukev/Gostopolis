@@ -1,0 +1,43 @@
+.label:hover {
+    opacity: 0.5;
+}
+
+.gray {
+    color: gray;
+}
+
+/* Beds increment decrement input */
+.input-number,
+.input-number-decrement,
+.input-number-increment {
+    user-select: none;
+    border: 1px solid #ccc;
+    height: 30px;
+}
+
+.input-number-decrement,
+.input-number-increment {
+    display: inline-block;
+    width: 30px;
+    line-height: 30px;
+    color: #444;
+    text-align: center;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.input-number-decrement {
+    border-right: none;
+    border-radius: 50%;
+}
+
+.input-number-increment {
+    border-left: none;
+    border-radius: 50%;
+}
+
+.input-number {
+    border-radius: 15%;
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+}

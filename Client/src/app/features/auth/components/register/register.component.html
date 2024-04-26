@@ -1,0 +1,59 @@
+<div class="background-color display-flex content-center items-center pt-10 pb-10">
+  <a [routerLink]="['/']" class="button-back" mat-icon-button matTooltip="Accent" color="accent">
+    <i class="fa-solid fa-arrow-left"></i>
+  </a>
+  <div class="card">
+    <h2 class="title mb-20 text-center">Нека създадем профил</h2>
+    <form class="mr-20 ml-20" [formGroup]="registerForm" (ngSubmit)="register()" method="post">
+      <mat-form-field appearance="outline" class="width-100">
+        <mat-label>Име: </mat-label>
+        <input formControlName="firstName" matInput type="name" placeholder="Име">
+        <mat-error *ngIf="firstName?.touched && firstName?.errors?.['required']">Полето е задължително.</mat-error>
+        <mat-error *ngIf="firstName?.touched && firstName?.errors?.['minlength']">Въведете поне 2 символа.</mat-error>
+        <mat-error *ngIf="firstName?.touched && firstName?.errors?.['maxlength']">Въведете не повече от 30 символа.</mat-error>
+      </mat-form-field>
+
+
+      <mat-form-field appearance="outline" class="width-100">
+        <mat-label>Фамилия: </mat-label>
+        <input formControlName="lastName" matInput type="name" placeholder="Фамилия">
+        <mat-error *ngIf="lastName?.touched && lastName?.errors?.['required']">Полето е задължително.</mat-error>
+        <mat-error *ngIf="lastName?.touched && lastName?.errors?.['minlength']">Въведете поне 2 символа.</mat-error>
+        <mat-error *ngIf="lastName?.touched && lastName?.errors?.['maxlength']">Въведете не повече от 30 символа.</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="width-100">
+        <mat-label>Email: </mat-label>
+        <input formControlName="email" matInput type="email" placeholder="Email">
+        <mat-error *ngIf="email?.touched && email?.errors?.['required']">Полето е задължително.</mat-error>
+        <mat-error *ngIf="email?.touched && email?.errors?.['email']">Въведете валиден имейл.</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="width-100">
+        <mat-label>Телефонен номер: </mat-label>
+        <span class="text-gray" matTextPrefix>+359 &nbsp;</span>
+        <input formControlName="phoneNumber" matInput type="tel" id="phone">
+        <mat-error *ngIf="phoneNumber?.touched && phoneNumber?.errors?.['required']">Полето е задължително.</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="width-100">
+        <mat-label>Парола: </mat-label>
+        <input formControlName="password" matInput type="password" placeholder="Парола">
+        <mat-error *ngIf="password?.touched && password?.errors?.['required']">Полето е задължително.</mat-error>
+        <mat-error *ngIf="password?.touched && password?.errors?.['minlength']">Въведете поне 8 символа.</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="width-100">
+        <mat-label>Повтори паролата: </mat-label>
+        <input formControlName="confirmPassword" matInput type="password" appComparePassword="password" placeholder="Повтори паролата">
+        <mat-error *ngIf="confirmPassword?.touched && confirmPassword?.errors?.['required']">Полето е задължително.</mat-error>
+        <mat-error *ngIf="confirmPassword?.touched && confirmPassword?.errors?.['minlength']">Въведете поне 8 символа.</mat-error>
+        <mat-error *ngIf="confirmPassword?.touched && confirmPassword?.errors?.['compareFailed']">Паролите не съвпадат.</mat-error>
+      </mat-form-field>
+
+      <button class="width-100 button" type="submit" mat-raised-button color="accent">Регистрирайте се</button>
+    </form>
+
+    <p class="text-center mt-10">Вече имате профил? Влезте в <a class="link" [routerLink]="['/auth/login']">него</a>.</p>
+  </div>
+</div>

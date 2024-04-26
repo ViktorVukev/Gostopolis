@@ -1,0 +1,209 @@
+.heading {
+  font-weight: 700;
+  font-size: 26px;
+}
+
+.form-heading {
+  font-size: 24px;
+}
+
+.option-heading {
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 26px;
+}
+
+.option-subtitle {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 18px;
+  color: #5e6f73;
+}
+
+.option {
+  background: none;
+  text-align: left;
+  padding: 40px 20px 40px 20px;
+  border: 2px solid #0d3073;
+  border-radius: 16px
+}
+
+.selected-option, .option:hover {
+  background-color: #dcdcdc;
+}
+
+.type-option-subtitle {
+  font-size: 18px;
+}
+
+.type-options-container {
+  flex-wrap: wrap;
+}
+
+.details-container {
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.gap {
+  gap: 1rem;
+}
+
+.details-form-container {
+  width: 28%;
+}
+
+.quill-editor-container {
+  width: 72%;
+}
+
+.quill-editor {
+  height: 69%;
+}
+
+.mb-1rem {
+  margin-bottom: 1rem;
+}
+
+.label {
+  font-size: 1.1rem;
+}
+
+/* Location section */
+.my-search-box {
+  margin-top: 2rem;
+  align-self: center;
+  font-size: 1rem;
+  font-weight: 400;
+  color: #212529;
+  width: 60%;
+  background-color: #fff;
+  background-clip: padding-box;
+  min-height: 30px !important;
+  border: none !important;
+  padding: 12px 12px 12px 16px !important;
+  border-radius: 78px !important;
+}
+
+/* Gallery styles */
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(30.5%, 1fr));
+  grid-gap: 1rem;
+}
+
+.gallery img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.gallery-item {
+  position: relative;
+  overflow: hidden;
+  border-radius: 8px;
+}
+
+.gallery-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.gallery-upload-container {
+  align-items: baseline;
+}
+
+.transparent-box {
+  height: 3.5rem;
+  width: 100%;
+  background-color:rgba(0, 0, 0, 0);
+  position: absolute;
+  bottom: 0;
+  transition: background-color 0.3s ease;
+}
+
+.gallery-item:hover .transparent-box {
+  background-color:rgba(0, 0, 0, 0.5);
+}
+
+.delete-button, .set-as-primary-button {
+  display: none;
+}
+
+.gallery-item:hover .delete-button, .gallery-item:hover .set-as-primary-button {
+  display: block;
+  transform: translateY(-0.5rem);
+  opacity: 1.0;
+}
+
+/* File upload */
+.file-field .mat-mdc-form-field {
+  margin: 40px 0 !important;
+  width: 70% !important;
+}
+
+.file-field .mat-toolbar-single-row {
+  height: auto !important;
+  background: transparent !important;
+}
+
+.file-field .mat-toolbar-single-row button {
+  width: 200px !important;
+}
+
+#uploadFile {
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  z-index: 9;
+  opacity: 0;
+  height: 100%;
+  cursor: pointer;
+  position: absolute;
+}
+
+/* Responsive design */
+
+/* Small devices (landscape phones, 576px and up) */
+@media (max-width: 576px) {
+
+  /* Category section */
+  .category-div {
+    flex-direction: column;
+  }
+
+  .option {
+    width: 100%;
+    margin-bottom: 20px;
+  }
+
+  /* File upload section */
+
+  /* Type section */
+  .type-options-container {
+    width: 100%;
+  }
+
+  .type-option {
+    width: 45%;
+  }
+
+  /* Name section */
+  .name-subtitle,
+  .name-input {
+    width: 100%;
+  }
+
+  /* Details section */
+  .details-flex {
+    flex-direction: column;
+  }
+
+  .details-form-container,
+  .quill-editor-container {
+    width: 100%;
+  }
+}

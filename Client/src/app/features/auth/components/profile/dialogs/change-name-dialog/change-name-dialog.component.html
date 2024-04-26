@@ -1,0 +1,27 @@
+<h1 mat-dialog-title>Промяна на име</h1>
+
+<form method="post" [formGroup]="updateForm" (ngSubmit)="update()">
+
+  <div mat-dialog-content class="display-flex flex-column">
+    <mat-form-field appearance="outline">
+      <mat-label>Име</mat-label>
+      <input matInput formControlName="firstName">
+      <mat-error *ngIf="firstName?.touched && firstName?.errors?.['required']">Полето е задължително.</mat-error>
+      <mat-error *ngIf="firstName?.touched && firstName?.errors?.['minlength']">Въведете поне 2 символа.</mat-error>
+      <mat-error *ngIf="firstName?.touched && firstName?.errors?.['maxlength']">Въведете не повече от 30 символа.</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Фамилия</mat-label>
+      <input matInput formControlName="lastName">
+      <mat-error *ngIf="lastName?.touched && lastName?.errors?.['required']">Полето е задължително.</mat-error>
+      <mat-error *ngIf="lastName?.touched && lastName?.errors?.['minlength']">Въведете поне 2 символа.</mat-error>
+      <mat-error *ngIf="lastName?.touched && lastName?.errors?.['maxlength']">Въведете не повече от 30 символа.</mat-error>
+    </mat-form-field>
+  </div>
+
+  <div mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Отказ</button>
+    <button mat-button cdkFocusInitial mat-dialog-close type="submit">Запази</button>
+  </div>
+</form>

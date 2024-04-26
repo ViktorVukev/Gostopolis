@@ -1,0 +1,20 @@
+@use "palette";
+@use "@angular/material" as mat;
+
+@include mat.core();
+
+$gostopolis-primary: mat.define-palette(palette.$gostopolis-theme-primary);
+$gostopolis-accent: mat.define-palette(palette.$gostopolis-theme-accent);
+$gostopolis-warn: mat.define-palette(palette.$gostopolis-theme-warn);
+
+$gostopolis-theme: mat.define-light-theme(
+  (
+    color: (
+      primary: $gostopolis-primary,
+      accent: $gostopolis-accent,
+      warn: $gostopolis-warn,
+    ),
+  )
+);
+
+@include mat.all-component-themes($gostopolis-theme);

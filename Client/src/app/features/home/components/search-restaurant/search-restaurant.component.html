@@ -1,0 +1,150 @@
+<div class="wrapper">
+  <div class="card-content gap-1 mt-40 items-baseline">
+
+    <mat-form-field appearance="outline" class="input-1">
+      <input matInput placeholder="Къде ще хапваш?" [(ngModel)]="data.town">
+      <mat-icon matSuffix class="text-dark-blue cursor-pointer">place</mat-icon>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <input matInput [matDatepicker]="restaurantDatePicker" placeholder="Избери ден" [min]="currentDate" [(ngModel)]="data.startDate">
+      <mat-datepicker-toggle class="text-dark-blue" matIconSuffix
+                             [for]="restaurantDatePicker"></mat-datepicker-toggle>
+      <mat-datepicker #restaurantDatePicker></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-select placeholder="В колко часа?" [(ngModel)]="data.startTime">
+        <mat-option *ngFor="let option of timeOptions" [value]="option">
+          {{ option }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" [matMenuTriggerFor]="peopleMenu" class="input-3">
+      <input matInput [(ngModel)]="'Гости '+ data.people + ' • Маси ' + data.tables">
+      <mat-icon matSuffix class="text-dark-blue cursor-pointer">people</mat-icon>
+    </mat-form-field>
+
+    <mat-menu #peopleMenu="matMenu" xPosition="before" [overlapTrigger]="false" class="menu">
+      <div class="pt-10 pb-10 pr-10 pl-10">
+        <div (click)="$event.stopPropagation()" class="display-flex items-center content-between mb-20">
+          <p class="mr-20 font text-index">Гости</p>
+          <div>
+            <span class="input-number-decrement" (click)="decrementRestaurantGuests()">–</span>
+            <input class="input-number" type="text" [(ngModel)]="data.people" [min]="1">
+            <span class="input-number-increment" (click)="incrementRestaurantGuests()">+</span>
+          </div>
+        </div>
+        <div (click)="$event.stopPropagation()" class="display-flex items-center content-between">
+          <p class="mr-20 font text-index">Маси</p>
+          <div>
+            <span class="input-number-decrement" (click)="decrementTables()">–</span>
+            <input class="input-number" type="text" [(ngModel)]="data.tables" [min]="1">
+            <span class="input-number-increment" (click)="incrementTables()">+</span>
+          </div>
+        </div>
+      </div>
+    </mat-menu>
+    <button (click)="search()" class="input-4 button" mat-raised-button color="primary">Търси</button>
+  </div>
+
+
+    <div class="display-flex gap-2 flex-wrap">
+        <div class="criteria-container">
+          <div  *ngIf="restaurants.length > 1">
+            <h2 class="filter-heading text-dark-blue mb-20">Сортирай по</h2>
+            <mat-form-field appearance="outline" class="width-100">
+              <mat-label>Подреди по</mat-label>
+              <mat-select (valueChange)="sort($event)">
+                <mat-option value="nameAscending">Име (възходящ ред)</mat-option>
+                <mat-option value="nameDescending">Име (низходящ ред)</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <mat-divider class="mt-20 mb-20"   *ngIf="restaurants.length > 1"></mat-divider>
+
+          <div>
+            <h2 class="filter-heading text-dark-blue mb-20">Тип обект</h2>
+            <div class="display-flex flex-column gap-05">
+              <mat-checkbox color="accent" (change)="typeChange($event, type.id)" *ngFor="let type of displayedRestaurantTypesList">{{ type.name }}</mat-checkbox>
+              <a (click)="toggleShowMoreTypes()">
+                <p class="text-light-blue text-rigth cursor-pointer ml-20">{{ showMoreTypes ? 'Виж по-малко' : 'Виж повече' }}</p>
+              </a>
+            </div>
+          </div>
+
+          <mat-divider class="mt-20 mb-20"></mat-divider>
+
+          <div>
+            <h2 class="filter-heading text-dark-blue mb-20">Удобства и достъпност</h2>
+            <div class="display-flex flex-column gap-05">
+              <mat-checkbox color="accent" [(ngModel)]="filters.hasParking">Паркинг</mat-checkbox>
+              <mat-checkbox color="accent" [(ngModel)]="filters.hasPosTerminal">POS терминал</mat-checkbox>
+              <mat-checkbox color="accent" [(ngModel)]="filters.acceptPets">Домашни любимци</mat-checkbox>
+            </div>
+          </div>
+
+            <mat-divider class="mt-20 mb-20"></mat-divider>
+
+          <div>
+            <h2 class="filter-heading text-dark-blue mb-20">Звезди</h2>
+            <div aria-label="Избери 5-звездна оценка" class="display-flex gap-05 flex-wrap">
+              <mat-checkbox (change)="starsChange($event, 1)">1 <i class="fa-solid fa-star text-accent"></i></mat-checkbox>
+              <mat-checkbox (change)="starsChange($event, 2)">2 <i class="fa-solid fa-star text-accent"></i></mat-checkbox>
+              <mat-checkbox (change)="starsChange($event, 3)">3 <i class="fa-solid fa-star text-accent"></i></mat-checkbox>
+              <mat-checkbox (change)="starsChange($event, 4)">4 <i class="fa-solid fa-star text-accent"></i></mat-checkbox>
+              <mat-checkbox (change)="starsChange($event, 5)">5 <i class="fa-solid fa-star text-accent"></i></mat-checkbox>
+            </div>
+          </div>
+
+            <mat-divider class="mt-20 mb-20"></mat-divider>
+
+            <button mat-raised-button color="primary" class="mb-20" (click)="filter()">Приложи</button>
+
+        </div>
+
+      <div class="results-container display-flex flex-column gap-1">
+        <p class="result-subheading">{{ restaurants.length }} {{ restaurants.length === 1 ? 'обект' : 'обекта' }}</p>
+        <div class="width-100 result-container display-flex gap-1 flex-wrap cursor-pointer" *ngFor="let restaurant of restaurants" (click)="details(restaurant.id)">
+          <div class="result-image-section">
+            <img class="result-image" [src]="restaurant.coverPhotoUrl" />
+          </div>
+          <div class="result-info-section display-flex flex-column content-between">
+            <div>
+              <div class="display-flex gap-05 items-center">
+                <h3 class="result-heading mt-10 mb-10 text-dark-blue">{{ restaurant.name}}</h3>
+                <div class="star-rating">
+                  <mat-icon *ngFor="let i of [].constructor(restaurant.stars)">star</mat-icon>
+                </div>
+              </div>
+              <p class="result-subheading mb-10">{{ restaurant.type.name }}</p>
+              <p class="result-subheading text-dark-blue mb-10"><i class="fa-solid fa-location-dot text-dark-blue"></i> {{ restaurant.town }}</p>
+            </div>
+
+            <div class="display-flex content-between mb-20">
+              <div class="display-flex gap-1 flex-wrap content-between text-dark-blue">
+                <div class="display-flex gap-05 amenity-container" *ngIf="restaurant.hasParking">
+                  <i class="fa-solid fa-square-parking"></i>
+                  <p class="amenity-label">Паркинг</p>
+                </div>
+                <div class="display-flex gap-05 amenity-container" *ngIf="restaurant.hasPosTerminal">
+                  <i class="fa-solid fa-credit-card"></i>
+                  <p class="amenity-label">POS терминал</p>
+                </div>
+                <div class="display-flex gap-05 amenity-container" *ngIf="restaurant.acceptOnlinePayments">
+                  <i class="fa-solid fa-credit-card"></i>
+                  <p class="amenity-label">Плащане през Гостополис</p>
+                </div>
+                <div class="display-flex gap-05 amenity-container" *ngIf="restaurant.acceptPets">
+                  <i class="fa-solid fa-dog"></i>
+                  <p class="amenity-label">Домашни любимци</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>

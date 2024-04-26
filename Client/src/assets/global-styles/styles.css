@@ -1,0 +1,467 @@
+/* Font set */
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
+* {
+    font-family: 'Roboto', sans-serif;
+}
+
+.font, #toast-container {
+    font-family: 'Roboto', sans-serif;
+}
+
+.font-size-9 {
+    font-size: 9pt;
+}
+
+body {
+    background-color: #fafafa;
+}
+
+mat-option {
+    font-family: 'Roboto', sans-serif !important;
+    font-size: 10pt !important;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+.bold-500 {
+    font-weight: 500;
+}
+
+/* Colors */
+.text-dark-blue {
+    color: #0d3073 !important;
+}
+
+.text-light-blue {
+    color: #4d98ff !important;
+}
+
+.text-white {
+    color: white !important;
+}
+
+.text-accent {
+    color: #ff6b73;
+}
+
+.text-gray {
+    color: gray !important;
+}
+
+.text-decoration-none {
+    text-decoration: none;
+}
+
+.font-weight-500 {
+    font-weight: 500;
+}
+
+.line-height {
+    line-height: 1.2rem;
+}
+
+/* App warapper */
+.wrapper {
+    width: 85%;
+    margin: 0 auto;
+}
+
+.main-mtb {
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+}
+
+/* Flex box */
+.display-flex {
+    display: flex !important;
+}
+
+.flex-column {
+    flex-direction: column;
+}
+
+.flex-wrap {
+    flex-wrap: wrap;
+}
+
+.gap-05 {
+    gap: 0.5rem;
+}
+
+.gap-1 {
+    gap: 1rem;
+}
+
+.gap-2 {
+    gap: 2rem;
+}
+
+.content-center {
+    justify-content: center;
+}
+
+.content-around {
+    justify-content: space-around;
+}
+
+.content-between {
+    justify-content: space-between !important;
+}
+
+.content-end {
+    justify-content: end;
+}
+
+.start {
+  justify-content: start;
+}
+
+.items-center {
+    align-items: center !important;
+}
+
+.items-baseline {
+    align-items: baseline;
+}
+
+/* Positioning */
+.relative {
+    position: relative;
+}
+
+.absolute {
+    position: absolute;
+}
+
+/* Width values */
+.width-100 {
+    width: 100% !important;
+}
+
+.width-40 {
+    width: 40%;
+}
+
+.width-50 {
+    width: 50%;
+}
+
+.width-85 {
+    width: 85%;
+}
+
+.width-90 {
+    width: 90%;
+}
+
+.width-80 {
+    width: 80%;
+}
+
+.width-60 {
+    width: 60%;
+}
+
+.width-75 {
+    width: 75%;
+}
+
+.width-33 {
+    width: 33.3%;
+}
+
+.width-32 {
+    width: 32%;
+}
+
+.width-30 {
+    width: 30%;
+}
+
+.width-20 {
+    width: 20%;
+}
+
+.width-25 {
+    width: 25%;
+}
+
+/* Text formating */
+.text-center {
+    text-align: center;
+}
+
+.text-right {
+    text-align: right !important;
+}
+
+.text-left {
+    text-align: left;
+}
+
+.text-index {
+    font-family: 'Roboto', sans-serif;
+    font-size: 10pt;
+}
+
+.link {
+    text-decoration: none;
+}
+
+.link:hover {
+    color: #b3c3d5;
+}
+
+/* Hover effects */
+.cursor-pointer {
+    cursor: pointer !important;
+}
+
+/* Angular Material overwrites */
+.mat-form-field-appearance-outline .mat-form-field-infix {
+    padding: 0.5em 0 0.5em 0;
+}
+
+mat-card-title {
+    font-weight: 500 !important;
+    margin-bottom: 0.5rem !important;
+}
+
+.mat-mdc-tab-label-container {
+    border-bottom-style: none !important;
+}
+
+.mat-checkbox {
+    width: calc(33.33% - 10px) !important;
+}
+
+.map .map-container {
+    border-radius: 1rem !important;
+}
+
+/* Small devices (landscape phones, 576px and up) */
+@media (max-width: 576px) {
+    .map .map-container {
+        width: 17rem !important;
+    }
+}
+
+/* Margins */
+.mt-10 {
+    margin-top: 10px;
+}
+
+.mb-10 {
+    margin-bottom: 10px;
+}
+
+.ml-10 {
+    margin-left: 10px;
+}
+
+.mr-10 {
+    margin-right: 10px;
+}
+
+.mt-20 {
+    margin-top: 20px !important;
+}
+
+.mb-20 {
+    margin-bottom: 20px !important;
+}
+
+.ml-20 {
+    margin-left: 20px;
+}
+
+.mr-20 {
+    margin-right: 20px;
+}
+
+.mt-30 {
+    margin-top: 30px !important;
+}
+
+.mb-30 {
+    margin-bottom: 30px !important;
+}
+
+.mt-40 {
+    margin-top: 40px;
+}
+
+.mb-40 {
+    margin-bottom: 40px;
+}
+
+.ml-40 {
+    margin-left: 40px;
+}
+
+.mr-40 {
+    margin-right: 40px;
+}
+
+.m0-auto {
+    margin: 0 auto !important;
+}
+
+/* Paddings */
+.pt-10 {
+    padding-top: 10px;
+}
+
+.pb-10 {
+    padding-bottom: 10px;
+}
+
+.pl-10 {
+    padding-left: 10px;
+}
+
+.pr-10 {
+    padding-right: 10px;
+}
+
+.pt-20 {
+    padding-top: 20px;
+}
+
+.pb-20 {
+    padding-bottom: 20px;
+}
+
+.pl-20 {
+    padding-left: 20px;
+}
+
+.pr-20 {
+    padding-right: 20px;
+}
+
+.pt-40 {
+    padding-top: 40px;
+}
+
+.pb-40 {
+    padding-bottom: 40px;
+}
+
+.pl-40 {
+    padding-left: 40px;
+}
+
+.pr-40 {
+    padding-right: 40px;
+}
+
+/* Input field icon */
+.mat-form-field-infix {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+}
+
+#search-tabs-group .mat-tab-nav-bar,
+.mat-tab-header {
+    border-bottom: none !important;
+}
+
+#search-tabs-group .mat-tab-body-wrapper {
+    margin-top: 20px;
+}
+
+.mat-mdc-form-field-subscript-wrapper {
+    margin-bottom: 0.5rem !important;
+}
+
+.mat-accent .mdc-checkbox .mdc-checkbox__native-control:enabled~.mdc-checkbox__background .mdc-checkbox__checkmark {
+    color: white;
+}
+
+/* Display options */
+.block {
+    display: block;
+}
+
+.inline {
+    display: inline !important;
+}
+
+/* Angular Material custom styles */
+.mat-stepper-vertical,
+.mat-stepper-horizontal {
+    background: #fafafa !important;
+}
+
+.languages-input .mat-mdc-form-field-subscript-wrapper {
+    display: none !important;
+}
+
+/* Spinner implementation */
+.spinner-border {
+    width: 6.5rem;
+    height: 6.5rem;
+    vertical-align: text-bottom;
+    border: 0.5em solid #0d3073;
+    border-right-color: transparent;
+    border-radius: 50%;
+    animation: spinner-border 0.75s linear infinite;
+    animation-timing-function: linear;
+    z-index: 9999;
+}
+
+@keyframes spinner-border {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.visually-hidden {
+    position: absolute !important;
+    height: 1px;
+    width: 1px;
+    overflow: hidden;
+    clip: rect(1px, 1px, 1px, 1px);
+    white-space: nowrap;
+}
+
+.spinner-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    background-color: white;
+    z-index: 9998;
+    display: none;
+}
+
+.spinner-overlay.show {
+    display: flex;
+}
+
+.spinner {
+    transform: translate(-50%, -50%);
+    width: 15rem;
+    height: 15rem;
+    border: 4px solid #fff;
+    border-top: 4px solid #0d3073;
+    border-radius: 50%;
+    animation: spin 2s linear infinite;
+    animation-timing-function: linear;
+}
+
+.spinner-logo {
+    position: absolute;
+    height: 4rem;
+}

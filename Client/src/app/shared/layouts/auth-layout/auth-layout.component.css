@@ -1,0 +1,9 @@
+@media (max-width: 768px) {
+    .component-content {
+        width: 100%;
+    }
+    
+    .auth-side {
+        display: none;
+    }
+}

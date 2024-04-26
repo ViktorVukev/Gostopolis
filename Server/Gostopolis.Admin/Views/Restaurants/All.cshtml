@@ -1,0 +1,48 @@
+﻿@model IEnumerable<Gostopolis.Admin.Models.Restaurants.RestaurantDetailsOutputModel>
+
+<main class="container mt-5">
+    <h2>Всички заведения <span class="badge text-bg-secondary">@Model.Count()</span></h2>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Име</th>
+                <th scope="col">Звезди</th>
+                <th scope="col">ЕИК/УИК</th>
+                <th scope="col">Адрес</th>
+                <th scope="col">Действия</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var restaurant in Model)
+            {
+                <tr>
+                    <th scope="row">@restaurant.Id</th>
+                    <th scope="row">
+                        @restaurant.Type.Name "@restaurant.Name" 
+                        @if (restaurant.IsVerified) 
+                        {
+                            <span class="badge text-bg-success">Одобрено</span>
+                        }
+                    </th>
+                    <td>
+                        @for (int i = 0; i < restaurant.Stars; i++)
+                        {
+                            <i class="fa fa-star rating-color"></i>
+                        }
+                    </td>
+                    <td>@restaurant.IdentificationNumber</td>
+                    <td>@restaurant.Address</td>
+                    <td>
+                        <button type="button" class="btn btn-warning">
+                            <a asp-action="Details" asp-route-id="@restaurant.Id" class="nav-link px-2">
+                                Детайли
+                            </a>
+                        </button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</main>

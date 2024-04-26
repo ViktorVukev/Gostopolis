@@ -1,0 +1,37 @@
+<h1 mat-dialog-title>Редакция на детайли</h1>
+
+<div mat-dialog-content class="display-flex flex-column gap-2">
+    <div class="mb-20">
+        <h2 class="font-weight-500">Удобства</h2>
+        <ng-container *ngFor="let category of accommodationFacilitiesList">
+            <h2 class="form-heading text-dark-blue mt-20 ">{{ category.name }}</h2>
+            <div class="display-flex flex-wrap content-start">
+                <mat-checkbox color="primary"
+                    class="mat-checkbox" *ngFor="let facility of category.facilities">{{ facility }}</mat-checkbox>
+            </div>
+        </ng-container>
+    </div>
+    <div>
+        <h2 class="font-weight-500 mb-20">Настаняване и напускане</h2>
+        <div class="display-flex items-baseline gap-05">
+            <mat-form-field>
+                <mat-label>Настаняване след</mat-label>
+                <mat-select>
+                    <mat-option *ngFor="let time of timeOptions" [value]="time">{{ time }}</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <div class="line">—</div>
+            <mat-form-field>
+                <mat-label>Напускане преди</mat-label>
+                <mat-select>
+                    <mat-option *ngFor="let time of timeOptions" [value]="time">{{ time }}</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+    </div>
+</div>
+
+<div mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Отказ</button>
+    <button mat-button cdkFocusInitial mat-dialog-close type="submit">Запази</button>
+</div>

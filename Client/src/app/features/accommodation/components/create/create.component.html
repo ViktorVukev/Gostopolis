@@ -1,0 +1,143 @@
+<div class="wrapper">
+    <h1 class="heading text-center text-dark-blue mt-40 mb-40">Добавяне на място за настаняване</h1>
+
+    <mat-stepper labelPosition="bottom">
+        <mat-step>
+            <ng-template matStepLabel>За обекта</ng-template>
+            <div class="spacer"></div>
+
+            <ng-container *ngFor="let category of accommodationFacilitiesList">
+                <h2 class="form-heading text-dark-blue mt-20 ">{{ category.name }}</h2>
+                <div class="display-flex flex-wrap content-start">
+                    <mat-checkbox color="primary" (change)="facilityChange($event, category.name, facility)"
+                        class="mat-checkbox" *ngFor="let facility of category.facilities">{{ facility }}</mat-checkbox>
+                </div>
+            </ng-container>
+
+            <div class="display-flex content-between items-baseline">
+                <button mat-button matStepperPrevious>Обратно</button>
+                <button mat-raised-button color="primary" matStepperNext>Напред</button>
+            </div>
+        </mat-step>
+
+        <mat-step>
+            <ng-template matStepLabel>Стаи</ng-template>
+            <div class="spacer"></div>
+            <mat-card>
+                <mat-card-content class="display-flex flex-wrap gap-1 content-between">
+                    <div>
+                        <mat-card-title class="text-dark-blue bold">Добави тип стая</mat-card-title>
+                        <mat-card-subtitle>Добавете тип стая и брой на стаите от този тип, които
+                            притежавате.</mat-card-subtitle>
+                    </div>
+                    <button mat-raised-button color="primary" mat-button (click)="openAddRoomDialog()">Добави
+                        стая</button>
+                </mat-card-content>
+            </mat-card>
+
+            <div class="mt-40">
+                <div class="display-flex gap-1 flex-wrap">
+                    <mat-card class="room-width" *ngFor="let room of rooms; let i = index" [matTooltip]="room.name"
+                        matTooltipPosition="above">
+                        <i class="fa-solid fa-xmark text-right xmark-icon cursor-pointer gray" (click)="deleteRoom(i)"></i>
+                        <mat-card-content class="display-flex flex-column">
+                            <div class="display-flex gray">
+                                <i class="fa-solid fa-tag"></i>
+                                <input type="text" placeholder="Въведи номер" [(ngModel)]="room.number"
+                                    class="gray width-85 room-number-input text-center font-size-9" />
+                            </div>
+                            <div class="display-flex gray">
+                                <i class="fa-solid fa-hotel"></i>
+                                <input type="number" placeholder="Въведи етаж" [(ngModel)]="room.floor"
+                                    class="gray width-85 room-number-input text-center font-size-9" />
+                            </div>
+                        </mat-card-content>
+                    </mat-card>
+                </div>
+            </div>
+
+            <div class="spacer"></div>
+            <div class="display-flex content-between items-baseline">
+                <button mat-button matStepperPrevious>Обратно</button>
+                <button mat-raised-button color="primary" matStepperNext>Напред</button>
+            </div>
+        </mat-step>
+
+        <mat-step>
+            <ng-template matStepLabel>Изхранвания</ng-template>
+            <div class="spacer"></div>
+
+            <h2 class="form-heading text-center text-dark-blue mb-40">Какви изхранвания включва престоят?</h2>
+            <div class="display-flex flex-column items-center gap-1">
+                <p *ngFor="let meal of meals">{{ meal.name }} ({{ meal.startTime }} - {{ meal.endTime}}) <i
+                        (click)="removeEating(meal)" class="fa-solid fa-trash text-accent cursor-pointer"></i></p>
+                <div class="display-flex flex-column content-center gap-1 eating-container">
+                    <div *ngIf="showAddEating" class="display-flex gap-05 eating-container">
+                        <form [formGroup]="mealForm" (ngSubmit)="addEating()" method="post" class="display-flex gap-05 items-baseline">
+                            <mat-form-field>
+                                <mat-label>Вид изхранване</mat-label>
+                                <input matInput formControlName="name">
+                            </mat-form-field>
+                            <div class="display-flex items-baseline content-center eating-container">
+                                <mat-form-field>
+                                    <mat-label>Започва</mat-label>
+                                    <mat-select formControlName="startTime">
+                                        <mat-option *ngFor="let time of remainingTimeOptions('earlier')"
+                                            [value]="time">{{ time }}</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                                <div class="line">—</div>
+                                <mat-form-field>
+                                    <mat-label>Приключва</mat-label>
+                                    <mat-select formControlName="endTime">
+                                        <mat-option *ngFor="let time of remainingTimeOptions('later')" [value]="time">{{
+                                            time }}</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                            <button mat-raised-button color="primary" type="submit">Добави</button>
+                        </form>
+                    </div>
+                    <div class="display-flex content-center">
+                        <button mat-raised-button (click)="openAddEating()">Добави</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="spacer"></div>
+            <div class="display-flex content-between items-baseline">
+                <button mat-button matStepperPrevious>Обратно</button>
+                <button mat-raised-button color="primary" matStepperNext>Напред</button>
+            </div>
+        </mat-step>
+
+        <mat-step>
+            <ng-template matStepLabel>Престой</ng-template>
+            <div class="spacer"></div>
+
+            <h2 class="form-heading text-center text-dark-blue mb-40">Какви са часовете за настаняване и напускане?</h2>
+            <div class="display-flex items-baseline content-center">
+                <mat-form-field>
+                    <mat-label>Настаняване след</mat-label>
+                    <mat-select [(ngModel)]="accommodation.checkInTime">
+                        <mat-option *ngFor="let time of timeOptions" [value]="time">{{ time }}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <div class="line">—</div>
+                <mat-form-field>
+                    <mat-label>Напускане преди</mat-label>
+                    <mat-select [(ngModel)]="accommodation.checkOutTime">
+                        <mat-option *ngFor="let time of timeOptions" [value]="time">{{ time }}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+
+            <div class="display-flex content-between items-baseline">
+                <button mat-button matStepperPrevious>Обратно</button>
+                <button mat-raised-button color="primary" (click)="create()">Завърши</button>
+            </div>
+        </mat-step>
+
+    </mat-stepper>
+
+</div>

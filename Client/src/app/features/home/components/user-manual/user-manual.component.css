@@ -1,0 +1,23 @@
+.hero-section {
+    width: 100%;
+    height: 20rem;
+    background-color: #3f51b5;
+    border-bottom-left-radius: 40%;
+    border-bottom-right-radius: 40%;
+}
+
+.hero-title {
+    font-size: 2.25rem;
+    font-weight: 600;
+    color: white;
+    letter-spacing: 0.4rem;
+}
+
+/* Responsive styles */
+
+/* Medium devices (tablets, 768px and up) */
+@media (max-width: 768px) {
+    .image {
+        width: 100%;
+    }
+}

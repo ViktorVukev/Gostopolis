@@ -1,0 +1,229 @@
+<section class="hero-section wrapper mb-20 display-flex gap-1 content-center items-center">
+    <h1 class="hero-title text-center wrapper">Как можем да помогнем?</h1>
+</section>
+
+<section class="questions-section wrapper">
+    <mat-accordion multi>
+        <mat-expansion-panel>
+            <mat-expansion-panel-header>
+                <mat-panel-title class="text-dark-blue bold-500">
+                    Регистрация
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+            <p class="line-height ">
+                Всеки потребител, който за пръв път достъпва приложението, е необходимо да премине през <a
+                    class="text-dark-blue text-decoration-none" [routerLink]="['/auth/register']">формата за
+                    регистрация</a>, за да достигне до вътрешните страници. Тя съдържа следните полета: <br> <br>
+            </p>
+            <ul class="pl-10 line-height ">
+                <li>• <span class="bold-500 text-dark-blue">Първо име</span> – от 2 до 50 символа, задължително поле;
+                </li>
+                <li>• <span class="bold-500 text-dark-blue">Фамилно име</span> – от 2 до 50 символа, задължително поле;
+                </li>
+                <li>• <span class="bold-500 text-dark-blue">Имейл </span> – въведеният имейл адрес се валидира,
+                    задължително поле;</li>
+                <li>• <span class="bold-500 text-dark-blue">Телефонен номер </span> – задължително поле;</li>
+                <li>• <span class="bold-500 text-dark-blue">Парола </span> – минимален брой символи: 8;</li>
+                <li>• <span class="bold-500 text-dark-blue">Повтори паролата </span> – Подсигурена е проверка за
+                    съвпадение на въведената парола чрез compare-password
+                    директиравата, която позволява преизползването ѝ на други места в приложението;</li>
+            </ul>
+        </mat-expansion-panel>
+        <mat-expansion-panel>
+            <mat-expansion-panel-header>
+                <mat-panel-title class="text-dark-blue bold-500">
+                    Вход
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+            <p class="line-height ">
+                Влизането във вече създаден профил се осъществява през компонентата <a
+                    class="text-dark-blue text-decoration-none" [routerLink]="['/auth/login']">Вход</a>. Необходимо е
+                въвеждането на имейл адрес и парола.
+            </p>
+        </mat-expansion-panel>
+        <mat-expansion-panel>
+            <mat-expansion-panel-header>
+                <mat-panel-title class="text-dark-blue bold-500">
+                    Търсене на обект
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+            <p class="line-height ">
+                След задаване на параметри за <a class="text-dark-blue text-decoration-none"
+                    [routerLink]="['/']">търсене</a>, потребителят може да достъпи всички обекти, отговарящи на
+                критериите. При избор на обект се отваря страницата за детайли. При
+                заведението може да се видят и менютата в обекта, както и дали в момента е отворено или затворено.
+            </p> <br>
+            <img src="../../../../../assets/images/user-manual/Picture1.png" class="image" />
+        </mat-expansion-panel>
+        <mat-expansion-panel>
+            <mat-expansion-panel-header>
+                <mat-panel-title class="text-dark-blue bold-500">
+                    Създаване на резервация
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+            <p class="line-height ">
+                След избор на оферта ще бъдете препратени към страница за създаване на резервация. Необходимо е да
+                подадете данни за контакт или да използвате автоматично попълнените от вашия профил.
+            </p> <br>
+        </mat-expansion-panel>
+        <mat-expansion-panel>
+            <mat-expansion-panel-header>
+                <mat-panel-title class="text-dark-blue bold-500">
+                    Моят профил
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+            <p class="line-height ">
+                Всеки един потребител може да променя информацията към профила. Ако собственик промени данни си, то
+                тогава е необходимо той отново да премине през процеса за удостоверяване на самоличността.
+                Информацията, която един потребител може да редактира/управлява включва: </p>
+            <ul class="pl-10 line-height ">
+                <li><span class="bold-500 text-dark-blue">• Име</span></li>
+                <li><span class="bold-500 text-dark-blue">• Фамилия</span></li>
+                <li><span class="bold-500 text-dark-blue">• Имейл</span></li>
+                <li><span class="bold-500 text-dark-blue">• Телефонен номер</span></li>
+                <li><span class="bold-500 text-dark-blue">• Управление на известията</span> - потребителят може да
+                    включи/изключи
+                    известяването по имейл при извършване на определени процеси (напр. влизане в профил).</li>
+                <li><span class="bold-500 text-dark-blue">• Промяна на парола</span> – Изпраща се имейл с линк, от който
+                    се извършва промяната.</li>
+                <li><span class="bold-500 text-dark-blue">• Профилна снимка</span></li>
+            </ul><br>
+            <img src="../../../../../assets/images/user-manual/Picture2.png" class="image" />
+        </mat-expansion-panel>
+        <mat-expansion-panel>
+            <mat-expansion-panel-header>
+                <mat-panel-title class="text-dark-blue bold-500">
+                    Заявка за партньорство
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+            <p class="line-height ">
+                При изпращане на заявка за партньорство документът трябва да бъде в pdf или jpg формат. Документът
+                трябва да съдържа трите имена и снимка на лицето. Допълнителната информация би могла да бъде закрита.
+            </p>
+            <br>
+            <img src="../../../../../assets/images/user-manual/Picture3.png" class="image" />
+        </mat-expansion-panel>
+        <mat-expansion-panel>
+            <mat-expansion-panel-header>
+                <mat-panel-title class="text-dark-blue bold-500">
+                    Добавяне на обект
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+            <p class="line-height ">
+                Създаването на обект включва следните характеристики: </p>
+            <ul class="pl-10 line-height ">
+                <li>• <span class="bold-500 text-dark-blue">Тип на обекта </span> – заведение или място за настаняване;
+                </li>
+                <li>• <span class="bold-500 text-dark-blue">Точен тип на обекта</span> </li>
+                <li>• <span class="bold-500 text-dark-blue">Име </span> – Официалното име, което се използва за данъчни
+                    цели или държавна регистрация. Това може да
+                    бъде името на фирма или физическо лице; </li>
+                <li>• <span class="bold-500 text-dark-blue">УИК/ЕИК </span> – Универсален идентификационен код (УИК) или
+                    единен идентификационен код (ЕИК); </li>
+                <li>• <span class="bold-500 text-dark-blue">Документ, доказващ притежанието на обекта </span> </li>
+                <li>• <span class="bold-500 text-dark-blue">Локация </span> </li>
+                <li>• <span class="bold-500 text-dark-blue">5-звездна оценка </span> </li>
+                <li>• <span class="bold-500 text-dark-blue">Информация дали обектът има наличен POS терминал и дали
+                        разрешава плащания през нашата платформа </span> </li>
+                <li>• <span class="bold-500 text-dark-blue">Информация дали обектът има наличен паркинг</span> </li>
+                <li>• <span class="bold-500 text-dark-blue">Информация дали се допускат домашни любимци </span> </li>
+                <li>• <span class="bold-500 text-dark-blue">Говоримите езици от персонала на обекта </span> </li>
+            </ul> <br />
+            <p>
+                Създава се и галерия на обекта, като трябва да се добавят най-малко 5 изображения, от които
+                партньорът трябва да избере една, която да бъде основна за обекта.
+            </p><br />
+
+            <img src="../../../../../assets/images/user-manual/Picture4.png" class="image" />
+        </mat-expansion-panel>
+
+        <mat-expansion-panel>
+            <mat-expansion-panel-header>
+                <mat-panel-title class="text-dark-blue bold-500">
+                    Добавяне на заведение
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+            <p class="line-height ">
+                За всяко заведение се подава следната информация: </p>
+            <ul class="pl-10 line-height ">
+                <li>• <span class="bold-500 text-dark-blue">Работно време </span> – за всеки един отделен ден от
+                    седмицата се посочва час на отваряне и час на затваряне, предлаганите часове са през интервал от 30
+                    минути;
+                </li>
+                <li>• <span class="bold-500 text-dark-blue">Маси </span> – добавя се всяка една маса като се задава
+                    номер на масата, капацитет, информация за това дали масата е за пушачи или непушачи и дали е
+                    вътрешна или външна;</li>
+                <li>• <span class="bold-500 text-dark-blue">Продукти </span> – добавят се всички продукти, които
+                    заведението предлага. За всеки продукт се подава име, цена, грамаж, категория, съставки, както и
+                    изображение;</li>
+                <li>• <span class="bold-500 text-dark-blue">Меню </span> – създават се отделните менюта като всяко има
+                    име. Към менютата се добавят вече създадените продукти.</li>
+            </ul> <br />
+
+            <img src="../../../../../assets/images/user-manual/Picture5.png" class="image" />
+        </mat-expansion-panel>
+
+        <mat-expansion-panel>
+            <mat-expansion-panel-header>
+                <mat-panel-title class="text-dark-blue bold-500">
+                    Добавяне на място за настаняване
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+            <p class="line-height ">
+                Всеки един обект от тип място за настаняване пази следната информация: </p>
+            <ul class="pl-10 line-height ">
+                <li>• <span class="bold-500 text-dark-blue">Удобства </span> – стандартни удобства, които притежава
+                    мястото за настаняване;
+                </li>
+                <li>• <span class="bold-500 text-dark-blue">Стаи </span> – за всяка една се посочва тип, име, номер,
+                    етаж, цена за нощувка (в лв.), капацитет, информация за леглата, принадлежности в банята и общи
+                    удобства;</li>
+                <li>• <span class="bold-500 text-dark-blue">Изхранвания </span> – ако има такива, се посочва вид,
+                    начален и краен час;</li>
+                <li>• <span class="bold-500 text-dark-blue">Часове за настаняване и напускане </span> </li>
+            </ul> <br />
+
+            <img src="../../../../../assets/images/user-manual/Picture6.png" class="image" />
+        </mat-expansion-panel>
+
+        <mat-expansion-panel>
+            <mat-expansion-panel-header>
+                <mat-panel-title class="text-dark-blue bold-500">
+                    Добавяне на място за настаняване
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+            <p class="line-height ">
+                Всеки един обект от тип място за настаняване пази следната информация: </p>
+            <ul class="pl-10 line-height ">
+                <li>• <span class="bold-500 text-dark-blue">Удобства </span> – стандартни удобства, които притежава
+                    мястото за настаняване;
+                </li>
+                <li>• <span class="bold-500 text-dark-blue">Стаи </span> – за всяка една се посочва тип, име, номер,
+                    етаж, цена за нощувка (в лв.), капацитет, информация за леглата, принадлежности в банята и общи
+                    удобства;</li>
+                <li>• <span class="bold-500 text-dark-blue">Изхранвания </span> – ако има такива, се посочва вид,
+                    начален и краен час;</li>
+                <li>• <span class="bold-500 text-dark-blue">Часове за настаняване и напускане </span> </li>
+            </ul> <br />
+
+            <img src="../../../../../assets/images/user-manual/Picture6.png" class="image" />
+        </mat-expansion-panel>
+
+        <mat-expansion-panel>
+            <mat-expansion-panel-header>
+                <mat-panel-title class="text-dark-blue bold-500">
+                    Управление на обект
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+            <p class="line-height ">
+                От страницата за детайли на обект може да достъпите и модула за управление на обект. В него са включени
+                всички характеристики за обекта, които се изискват и при създаване. Информацията може да бъде
+                редактирана, изтривана, а може и да се добавя такава. Важно е да отбележим, че при редакция на
+                информация от частта "Обща информация", обектът ще бъде временно затворен, докато администратор провери
+                въведените данни.
+            </p> <br>
+            <img src="../../../../../assets/images/user-manual/Picture7.png" class="image" />
+        </mat-expansion-panel>
+
+    </mat-accordion>
+</section>

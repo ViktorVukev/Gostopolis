@@ -1,0 +1,74 @@
+h1 {
+  font-weight: 500;
+  font-size: 26px;
+}
+
+.text-decoration-none {
+  text-decoration: none;
+}
+
+.status-tag {
+  padding: 5px 10px;
+  border: 1px solid;
+  border-radius: 20px;
+  width: 50%;
+  text-align: center;
+}
+
+.status-success {
+  border-color: #3d7513;
+  background-color: #dfefd0;
+}
+
+.status-success > p {
+  color: #3d7513;
+}
+
+.status-pending {
+  border-color: #ffe47f;
+  background-color: #fff3c6;
+}
+
+.status-pending > p {
+  color: #baa038;
+}
+
+.status-declined {
+  border-color: #ffc7bb;
+  background-color: #ffded7;
+}
+
+.status-declined > p {
+  color: #be5a42;
+}
+
+.line-height {
+  line-height: 23px;
+}
+
+/* Responsive styles */
+.mobile {
+  display: none;
+}
+
+/* Small devices (landscape phones, 576px and up) */
+@media (max-width: 576px) {
+  .desktop {
+    display: none;
+  }
+
+  .mobile {
+    display: block;
+  }
+
+  .status-tag {
+    width: 100%;
+  }
+}
+
+/* Medium devices (tablets, 768px and up) */
+@media (max-width: 768px) {
+  .status-tag {
+    width: 70%;
+  }
+}

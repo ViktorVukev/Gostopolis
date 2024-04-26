@@ -1,0 +1,408 @@
+<div class="wrapper manage-warpper display-flex content-between pt-40 mb-40">
+
+    <div class="sidebar">
+      <a [routerLink]="['/restaurant/details']" [queryParams]="{ id: restaurant.id }" class="text-decoration-none">
+        <div class="manage-info-container display-flex gap-1 items-center">
+            <div class="img-container">
+                <div class="relative">
+                    <img [src]="restaurant.coverPhotoUrl" class="property-image">
+                </div>
+            </div>
+            <div>
+                <h2 class="property-heading mt-10 mb-10 text-dark-blue">{{ restaurant.type.name }} "{{ restaurant.name }}"</h2>
+                <p class="property-subheading mt-10">{{ restaurant.address }}</p>
+            </div>
+        </div>
+      </a>
+
+        <div class="spacer"></div>
+
+        <div class="menu display-flex content-between">
+            <div class="menu-item display-flex items-center content-between cursor-pointer"
+                (click)="changeTab('statistics')" [ngClass]="{'menu-item-selected': tabId == 'statistics'}">
+                <div class="display-flex items-center">
+                    <i class="fa-solid fa-chart-simple fa-lg text-dark-blue"></i>
+                    <p class="ml-10 text-dark-blue">Статистики</p>
+                </div>
+                <i class="fa-solid fa-angle-right fa-lg text-dark-blue"></i>
+            </div>
+
+            <div class="menu-item display-flex items-center content-between cursor-pointer"
+                (click)="changeTab('reservations')" [ngClass]="{'menu-item-selected': tabId == 'reservations'}">
+                <div class="display-flex items-center">
+                    <i class="fa-solid fa-book fa-lg text-dark-blue"></i>
+                    <p class="ml-10 text-dark-blue">Резервации</p>
+                </div>
+                <i class="fa-solid fa-angle-right fa-lg text-dark-blue"></i>
+            </div>
+
+            <div class="menu-item display-flex items-center content-between cursor-pointer"
+                (click)="changeTab('general-info')" [ngClass]="{'menu-item-selected': tabId == 'general-info'}">
+                <div class="display-flex items-center">
+                    <i class="fa-solid fa-circle-info fa-lg text-dark-blue"></i>
+                    <p class="ml-10 text-dark-blue">Обща информация</p>
+                </div>
+                <i class="fa-solid fa-angle-right fa-lg text-dark-blue"></i>
+            </div>
+
+            <div class="menu-item display-flex items-center content-between cursor-pointer"
+                (click)="changeTab('gallery')" [ngClass]="{'menu-item-selected': tabId == 'gallery'}">
+                <div class="display-flex items-center">
+                    <i class="fa-solid fa-images fa-lg text-dark-blue"></i>
+                    <p class="ml-10 text-dark-blue">Галерия</p>
+                </div>
+                <i class="fa-solid fa-angle-right fa-lg text-dark-blue"></i>
+            </div>
+
+            <div class="menu-item display-flex items-center content-between cursor-pointer"
+                (click)="changeTab('details')" [ngClass]="{'menu-item-selected': tabId == 'details'}">
+                <div class="display-flex items-center">
+                    <i class="fa-solid fa-file fa-lg text-dark-blue"></i>
+                    <p class="ml-10 text-dark-blue">Детайли</p>
+                </div>
+                <i class="fa-solid fa-angle-right fa-lg text-dark-blue"></i>
+            </div>
+
+            <div class="menu-item display-flex items-center content-between cursor-pointer"
+                (click)="changeTab('tables')" [ngClass]="{'menu-item-selected': tabId == 'tables'}">
+                <div class="display-flex items-center">
+                    <i class="fa-solid fa-table fa-lg text-dark-blue"></i>
+                    <p class="ml-10 text-dark-blue">Маси</p>
+                </div>
+                <i class="fa-solid fa-angle-right fa-lg text-dark-blue"></i>
+            </div>
+
+            <div class="menu-item display-flex items-center content-between cursor-pointer"
+                (click)="changeTab('products')" [ngClass]="{'menu-item-selected': tabId == 'products'}">
+                <div class="display-flex items-center">
+                    <i class="fa-solid fa-burger fa-lg text-dark-blue"></i>
+                    <p class="ml-10 text-dark-blue">Продукти</p>
+                </div>
+                <i class="fa-solid fa-angle-right fa-lg text-dark-blue"></i>
+            </div>
+
+            <div class="menu-item display-flex items-center content-between cursor-pointer"
+                (click)="changeTab('menus')" [ngClass]="{'menu-item-selected': tabId == 'menus'}">
+                <div class="display-flex items-center">
+                    <i class="fa-solid fa-utensils fa-lg text-dark-blue"></i>
+                    <p class="ml-10 text-dark-blue">Менюта</p>
+                </div>
+                <i class="fa-solid fa-angle-right fa-lg text-dark-blue"></i>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="content">
+        <div *ngIf="tabId === 'statistics'">
+            <h1 class="content-heading text-dark-blue mb-10">Брой резервации по месеци</h1>
+            <div id="chart">
+                <apx-chart [series]="chartOptions.series!" [chart]="chartOptions.chart!" [xaxis]="chartOptions.xaxis!"
+                    [dataLabels]="chartOptions.dataLabels!" [grid]="chartOptions.grid!" [stroke]="chartOptions.stroke!"
+                    [title]="chartOptions.title!"></apx-chart>
+            </div>
+        </div>
+
+        <div *ngIf="tabId === 'reservations'">
+            <h1 class="content-heading text-dark-blue mb-10">Днес предстои да настаните</h1>
+            <p class="text-gray mb-10" *ngIf="todayReservations.length == 0">Няма планирани резервации за днес.</p>
+            <mat-accordion>
+                <mat-expansion-panel hideToggle *ngFor="let reservation of todayReservations">
+                  <mat-expansion-panel-header>
+                    <mat-panel-title>
+                      {{ reservation.client.firstName }} {{ reservation.client.lastName }}
+                    </mat-panel-title>
+                    <mat-panel-description>
+                      {{ reservation.startDate | date: 'dd.MM.yyyy HH:mm'}}
+                    </mat-panel-description>
+                  </mat-expansion-panel-header>
+                  <p class="mb-10">
+                    <span class="font-weight-500">Номер на резервацията: </span> {{ reservation.id }}
+                  </p>
+                  <p class="mb-10">
+                    <span class="font-weight-500">Брой гости: </span> {{ reservation.guests }}
+                  </p>
+                  <p class="mb-10">
+                    <span class="font-weight-500">Име на резервацията: </span> {{ reservation.client.firstName }} {{ reservation.client.lastName }}
+                  </p>
+                  <p class="mb-10">
+                    <span class="font-weight-500">Телефон: </span> {{ reservation.client.phoneNumber}}
+                  </p>
+                  <p class="mb-10">
+                    <span class="font-weight-500">Маси №: </span> {{ reservation.tableNumbers }}
+                  </p>
+<!--                    <button mat-raised-button color="accent" class="color-white" (click)="openConfirmDeleteReservationDialog()">Премахни резервация</button>-->
+                </mat-expansion-panel>
+            </mat-accordion>
+
+            <h1 class="content-heading text-dark-blue mt-40 mb-10">Предстоящи резервации</h1>
+            <p class="text-gray mb-10" *ngIf="upcomingReservations.length == 0">Няма предстоящи резервации.</p>
+            <mat-accordion>
+                <mat-expansion-panel hideToggle *ngFor="let reservation of upcomingReservations">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                          {{ reservation.client.firstName }} {{ reservation.client.lastName }}
+                        </mat-panel-title>
+                        <mat-panel-description>
+                          {{ reservation.startDate | date: 'dd.MM.yyyy HH:mm'}}
+                        </mat-panel-description>
+                    </mat-expansion-panel-header>
+                    <p class="mb-10">
+                        <span class="font-weight-500">Номер на резервацията: </span> {{ reservation.id }}
+                    </p>
+                    <p class="mb-10">
+                        <span class="font-weight-500">Брой гости: </span> {{ reservation.guests }}
+                    </p>
+                    <p class="mb-10">
+                        <span class="font-weight-500">Име на резервацията: </span> {{ reservation.client.firstName }} {{ reservation.client.lastName }}
+                    </p>
+                    <p class="mb-10">
+                        <span class="font-weight-500">Телефон: </span> {{ reservation.client.phoneNumber}}
+                    </p>
+                  <p class="mb-10">
+                    <span class="font-weight-500">Маси №: </span> {{ reservation.tableNumbers }}
+                  </p>
+<!--                    <button mat-raised-button color="accent" class="color-white" (click)="openConfirmDeleteReservationDialog()">Премахни резервация</button>-->
+                </mat-expansion-panel>
+            </mat-accordion>
+
+            <div class="display-flex content-between items-center mt-40 flex-wrap">
+                <h1 class="content-heading text-dark-blue">Минали резервации</h1>
+                <p class="edit cursor-pointer" (click)="openPastReservationsDialog()">Преглед</p>
+            </div>
+
+        </div>
+
+        <div *ngIf="tabId === 'general-info'">
+            <div class="display-flex label-container content-between items-center mb-20">
+                <div class="mb-20">
+                    <div class="display-flex content-between items-center flex-wrap">
+                        <h1 class="content-heading text-dark-blue mb-10">Промяна на обща информация</h1>
+                        <p class="edit cursor-pointer" (click)="openGeneralInfoDialog()">Редактирай</p>
+                    </div>
+                    <p class="text-gray mt-10">Внимание! След всяка промяна на общата информация за обект е необходимо
+                        повторно одобрение на заявка от администратор.</p>
+
+                    <div class="display-flex flex-wrap mt-20">
+                        <div class="width-50">
+                            <span class="text-dark-blue font-weight-500">Категория обект</span>
+                            <p class="mt-10">Заведение</p>
+                        </div>
+                        <div class="width-50">
+                            <span class="text-dark-blue font-weight-500">Тип на обекта</span>
+                            <p class="mt-10">{{ restaurant.type.name }}</p>
+                        </div>
+                    </div>
+
+                    <div class="display-flex flex-wrap mt-40">
+                        <div class="width-50">
+                            <span class="text-dark-blue font-weight-500">Име на обекта</span>
+                            <p class="mt-10">{{ restaurant.name }}</p>
+                        </div>
+                        <div class="width-50">
+                            <span class="text-dark-blue font-weight-500">УИК/ЕИК</span>
+                            <p class="mt-10">{{ restaurant.identificationNumber }}</p>
+                        </div>
+                    </div>
+
+                    <div class="display-flex flex-wrap mt-40">
+                        <div class="width-50">
+                            <span class="text-dark-blue font-weight-500">Документ</span>
+                            <a target="_blank" [href]="restaurant.ownershipDocumentUrl">
+                                <p class="mt-10">Отвори</p>
+                            </a>
+                        </div>
+                        <div class="width-50">
+                            <span class="text-dark-blue font-weight-500">Адрес на обекта</span>
+                            <p class="mt-10">{{ restaurant.address }}</p>
+                        </div>
+                    </div>
+
+                    <div class="display-flex flex-wrap mt-40">
+                        <div class="width-50">
+                            <span class="text-dark-blue font-weight-500">Телефонен номер</span>
+                            <a [href]="'tel:' + restaurant.phoneNumber">
+                                <p class="mt-10">{{ restaurant.phoneNumber }}</p>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="mt-40">
+                        <span class="text-dark-blue font-weight-500">Описание</span>
+                        <div [innerHTML]="restaurant.description"></div>
+                    </div>
+
+                    <div class="mt-40">
+                        <span class="text-dark-blue font-weight-500">Удобства</span>
+                        <p class="mt-10">{{ restaurant.hasParking ? 'Паркинг,' : ''}} {{ restaurant.hasPosTerminal ? 'POS терминал,' : ''}} {{ restaurant.acceptOnlinePayments ? 'Плащане през нашата платформа,' : ''}} {{ restaurant.acceptPets ? 'Домашни любимци' : ''}}</p>
+                    </div>
+
+                    <div class="mt-40">
+                        <span class="text-dark-blue font-weight-500">Езици, говорени от персонала</span>
+                        <p class="mt-10">{{ restaurant.spokenLanguages }}</p>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+      <div *ngIf="tabId === 'gallery'">
+        <div class="display-flex flex-wrap content-between items-center mb-40">
+          <h1 class="content-heading text-dark-blue">Галерия</h1>
+          <p class="edit cursor-pointer" (click)="openGalleryUploadDialog()">Добави</p>
+        </div>
+        <div class="gallery-container" gallerize>
+          <div *ngFor="let image of images, let i = index" class="image-wrapper">
+            <img [src]="image.data?.src" [attr.imageSrc]="image.data?.src" [attr.thumbSrc]="image.data?.thumb" class="image-tag"/>
+            <div class="transparent-box display-flex items-center content-center gap-05">
+              <a (click)="setAsCoverImage(image.data?.src)"><i class="fa-solid fa-book action-button text-white cursor-pointer" matTooltip="Задай по подразбиране"></i></a>
+              <a (click)="deleteImage(i)"><i class="fa-solid fa-trash action-button text-accent cursor-pointer" matTooltip="Изтрий"></i></a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+        <div *ngIf="tabId === 'details'">
+            <div class="display-flex flex-wrap content-between items-center">
+                <h1 class="content-heading text-dark-blue">Детайли за обекта</h1>
+                <p class="edit cursor-pointer" (click)="openEditDetailsDialog()">Редактирай</p>
+            </div>
+
+          <div class="mt-40">
+            <p class="mt-10" *ngIf="restaurant.isTemporaryClosed && restaurant.isVerified">Вашето заведение е одобрено от администратор и очаква да бъде показано на нашите потребители, след като всичко е готово.<p>
+            <p class="mt-10" *ngIf="!restaurant.isTemporaryClosed">Вашето заведение е отбелязано като <b>отворено</b>, това означава, че потребителите могат да го достъпват, както и да създават резервации в него.<p>
+            <p class="mt-10" *ngIf="!restaurant.isVerified">Процесът на одобрение от администратор е ключов етап във внимателното и качествено подбиране на заведенията, които се присъединяват към нашата платформа. Стремим се да осигурим на нашите потребители най-доброто кулинарно и обществено изживяване, затова използваме стриктни критерии за одобрение.<p>
+            <p class="mt-10" *ngIf="!restaurant.isVerified">Когато заведението бъде създадено или редактирано, нашите администратори извършват подробен анализ и преглед на неговите характеристики, които могат да влияят на клиентите откъм настроение и преживяване.</p>
+            <p class="mt-10" *ngIf="!restaurant.isVerified">След извършването на този обстоен анализ, нашите администратори вземат решение дали заведението отговаря на нашите стандарти за качество и е подходящо за показване в платформата ни. След одобрение, заведението получава възможността да отвори заведението си пред неговите дигитални потребители, което включва показване на информацията за него и предоставяне на възможност за резервации и оценки.</p>
+          </div>
+
+          <div class="mt-40 display-flex gap-1">
+
+              <button mat-raised-button color="accent" class="text-white" matTooltip="Може да затворите вашия обект временно."
+                      matTooltipPosition="above" *ngIf="!restaurant.isTemporaryClosed && restaurant.isVerified" (click)="changeVisibility()">Затвори обект</button>
+              <button mat-raised-button color="primary" *ngIf="restaurant.isVerified && restaurant.isTemporaryClosed" (click)="changeVisibility()">Отвори обект</button>
+            </div>
+            <div class="mt-40">
+              <p class="text-dark-blue font-weight-500">{{ restaurant.workingTime !== null ? 'Работно време ' : 'Все още не е въведено работно време.' }}</p>
+              <p class="mt-10" *ngIf="restaurant.workingTime === null">Задайте работното време на вашето заведение, независимо дали сте кафене, ресторант или друг вид заведение. Предоставете на вашите клиенти ясна представа за това, кога точно могат да се насладят на вашите услуги и уютна обстановка. Независимо от това, дали сте любимо място за кафе или заведение с разнообразие от ястия, важно е да определите работното си време. И помнете, че винаги можете да промените зададените часове. Позволете на посетителите ви да планират своите срещи и моменти на релаксация във вашето заведение с лекота и удоволствие!</p>
+              <p class="mt-10" *ngIf="restaurant.workingTime !== null">Понеделник: {{ restaurant.workingTime.mondayOpenTime !== null ? (restaurant.workingTime.mondayOpenTime.slice(0, 5) + ' - ' + restaurant.workingTime.mondayCloseTime.slice(0, 5)) : 'Затворено' }}</p>
+              <p class="mt-10" *ngIf="restaurant.workingTime !== null">Вторник: {{ restaurant.workingTime.tuesdayOpenTime !== null ? (restaurant.workingTime.tuesdayOpenTime.slice(0, 5) + ' - ' + restaurant.workingTime.tuesdayCloseTime.slice(0, 5)) : 'Затворено' }}</p>
+              <p class="mt-10" *ngIf="restaurant.workingTime !== null">Сряда: {{ restaurant.workingTime.wednesdayOpenTime !== null ? (restaurant.workingTime.wednesdayOpenTime.slice(0, 5) + ' - ' + restaurant.workingTime.wednesdayCloseTime.slice(0, 5)) : 'Затворено' }}</p>
+              <p class="mt-10" *ngIf="restaurant.workingTime !== null">Четвъртък: {{ restaurant.workingTime.thursdayOpenTime !== null ? (restaurant.workingTime.thursdayOpenTime.slice(0, 5) + ' - ' + restaurant.workingTime.thursdayCloseTime.slice(0, 5)) : 'Затворено' }}</p>
+              <p class="mt-10" *ngIf="restaurant.workingTime !== null">Петък: {{ restaurant.workingTime.fridayOpenTime !== null ? (restaurant.workingTime.fridayOpenTime.slice(0, 5) + ' - ' + restaurant.workingTime.fridayCloseTime.slice(0, 5)) : 'Затворено' }}</p>
+              <p class="mt-10" *ngIf="restaurant.workingTime !== null">Събота: {{ restaurant.workingTime.saturdayOpenTime !== null ? (restaurant.workingTime.saturdayOpenTime.slice(0, 5) + ' - ' + restaurant.workingTime.saturdayCloseTime.slice(0, 5)) : 'Затворено' }}</p>
+              <p class="mt-10" *ngIf="restaurant.workingTime !== null">Неделя: {{ restaurant.workingTime.sundayOpenTime !== null ? (restaurant.workingTime.sundayOpenTime.slice(0, 5) + ' - ' + restaurant.workingTime.sundayCloseTime.slice(0, 5)) : 'Затворено' }}</p>
+            </div>
+        </div>
+
+        <div *ngIf="tabId === 'tables'">
+            <div class="display-flex flex-wrap content-between items-center">
+                <h1 class="content-heading text-dark-blue">Маси</h1>
+                <p class="edit cursor-pointer" (click)="openAddTableDialog()">Добави</p>
+            </div>
+
+          <div class="mt-40" *ngFor="let type of tableTypes">
+            <h2 class="bold text-dark-blue mb-10">Капацитет: {{ type.capacity }}</h2>
+            <p class="mb-20">
+              {{ type?.isOutdoor ? 'Външна' : 'Вътрешна' }},
+              {{ type?.isSmokingAllowed ? 'За пушачи' : 'За непушачи' }}
+            </p>
+            <div class="display-flex gap-1">
+              <mat-card class="table-width" *ngFor="let table of type.tables">
+                <mat-card-content>
+                  <p class="text-center mb-10">{{ table.number }}</p>
+                  <div class="display-flex content-center gap-05 text-accent">
+                    <i class="fa-solid fa-pen cursor-pointer gray" (click)="openEditTableDialog()"></i>
+                    <i class="fa-solid fa-trash cursor-pointer gray" (click)="deleteTable(table.id)"></i>
+                  </div>
+                </mat-card-content>
+              </mat-card>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="tabId === 'products'">
+            <div class="display-flex flex-wrap content-between items-center">
+                <h1 class="content-heading text-dark-blue">Продукти</h1>
+                <p class="edit cursor-pointer" (click)="openAddProductDialog()">Добави</p>
+            </div>
+            <div class="display-flex flex-wrap gap-1 mt-40">
+                <mat-card class="product-width" *ngFor="let product of restaurant.products">
+                    <div class="product-image-container mb-10">
+                        <img mat-card-image [src]="product.imageUrl" alt="Photo">
+                    </div>
+                    <mat-card-content>
+                        <p class="text-center mb-10">
+                          {{ product.name }}
+                        </p>
+                        <div class="display-flex content-center gap-05 text-accent">
+                            <i class="fa-solid fa-pen cursor-pointer gray" (click)="openEditProductDialog()"></i>
+                            <i class="fa-solid fa-trash cursor-pointer gray" (click)="deleteProduct(product.id)"></i>
+                        </div>
+                    </mat-card-content>
+                </mat-card>
+            </div>
+        </div>
+
+        <div *ngIf="tabId === 'menus'">
+            <div class="display-flex flex-wrap content-between items-center">
+                <h1 class="content-heading text-dark-blue">Менюта</h1>
+                <p class="edit cursor-pointer" (click)="openAddMenuDialog()">Добави</p>
+            </div>
+
+            <mat-accordion multi>
+                <mat-expansion-panel>
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            Меню
+                            <div class="display-flex content-center gap-05 ml-10">
+                                <i class="fa-solid fa-trash text-accent cursor-pointer"></i>
+                                <i class="fa-solid fa-pen text-accent cursor-pointer" (click)="openAddMenuDialog()"></i>
+                            </div>
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+
+                    <div>
+                        <h2 class="bold text-dark-blue mb-10 width-100">Продукти в менюто</h2>
+                        <div class="display-flex gap-1 flex-wrap mb-20">
+                            <mat-card class="product-width">
+                                <div class="product-image-container mb-10">
+                                    <img mat-card-image src="https://www.foodandwine.com/thmb/Wd4lBRZz3X_8qBr69UOu2m7I2iw=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/classic-cheese-pizza-FT-RECIPE0422-31a2c938fc2546c9a07b7011658cfd05.jpg" alt="Photo">
+                                </div>
+                                <mat-card-content>
+                                    <p class="text-center mb-10">
+                                        Пица
+                                    </p>
+                                    <div class="display-flex content-center gap-05">
+                                        <i class="fa-solid fa-trash text-accent cursor-pointer"></i>
+                                        <i class="fa-solid fa-pen text-accent cursor-pointer"></i>
+                                    </div>
+                                </mat-card-content>
+                            </mat-card>
+                        </div>
+                    </div>
+
+                    <ng-container>
+                        <div class="display-flex gap-1 flex-wrap mb-20">
+                            <h2 class="bold text-dark-blue mb-10 width-100">Основни</h2>
+                            <mat-card class="product-width">
+                                <div class="product-image-container mb-10">
+                                    <img mat-card-image src="https://www.foodandwine.com/thmb/Wd4lBRZz3X_8qBr69UOu2m7I2iw=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/classic-cheese-pizza-FT-RECIPE0422-31a2c938fc2546c9a07b7011658cfd05.jpg" alt="Photo">
+                                </div>
+                                <mat-card-content>
+                                    <p class="text-center mb-10">Пица</p>
+                                    <div class="display-flex content-center">
+                                        <i class="fa-solid fa-add text-accent cursor-pointer"></i>
+                                    </div>
+                                </mat-card-content>
+                            </mat-card>
+                        </div>
+                    </ng-container>
+                </mat-expansion-panel>
+            </mat-accordion>
+
+        </div>
+
+    </div>
+
+</div>

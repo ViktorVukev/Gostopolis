@@ -1,0 +1,36 @@
+<h1 mat-dialog-title>Добави маса</h1>
+
+<form [formGroup]="tableForm" (ngSubmit)="onSubmit()">
+
+    <div mat-dialog-content class="display-flex flex-column">
+
+        <mat-form-field appearance="outline">
+            <mat-label>Капацитет</mat-label>
+            <input matInput type="number" min="1" formControlName="capacity">
+          <mat-error *ngIf="capacity?.touched && capacity?.errors?.['required']">Полето е задължително.</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+            <mat-label>Брой маси от този тип</mat-label>
+            <input matInput type="number" min="1" formControlName="tableCount">
+          <mat-error *ngIf="tableCount?.touched && tableCount?.errors?.['required']">Полето е задължително.</mat-error>
+        </mat-form-field>
+
+        <div class="display-flex content-between">
+            <mat-slide-toggle color="primary" [(ngModel)]="isSmokingAllowed" [ngModelOptions]="{standalone: true}" name="isSmokingAllowed">
+                {{ isSmokingAllowed ? 'Пушачи' : 'Непушачи' }}
+            </mat-slide-toggle>
+
+            <mat-slide-toggle color="primary" [(ngModel)]="isOutdoor" [ngModelOptions]="{standalone: true}" name="isOutdoor">
+                {{ isOutdoor ? 'Външна' : 'Вътрешна' }}
+            </mat-slide-toggle>
+        </div>
+
+    </div>
+
+    <div mat-dialog-actions align="end">
+        <button mat-button mat-dialog-close>Отказ</button>
+        <button mat-button cdkFocusInitial type="submit">Добави</button>
+    </div>
+
+</form>

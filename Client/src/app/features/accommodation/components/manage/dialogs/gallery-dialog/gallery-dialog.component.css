@@ -1,0 +1,55 @@
+/* Gallery styles */
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(30.5%, 1fr));
+  grid-gap: 1rem;
+}
+
+.gallery img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.gallery-item {
+  position: relative;
+  overflow: hidden;
+  border-radius: 8px;
+}
+
+.gallery-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.gallery-upload-container {
+  align-items: baseline;
+}
+
+.transparent-box {
+  height: 3.5rem;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0);
+  position: absolute;
+  bottom: 0;
+  transition: background-color 0.3s ease;
+}
+
+.gallery-item:hover .transparent-box {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.delete-button,
+.set-as-primary-button {
+  display: none;
+}
+
+.gallery-item:hover .delete-button,
+.gallery-item:hover .set-as-primary-button {
+  display: block;
+  transform: translateY(-0.5rem);
+  opacity: 1.0;
+}

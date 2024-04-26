@@ -1,0 +1,68 @@
+<div class="wrapper main-mtb">
+    <h1 class="text-dark-blue mb-20">Моите резервации</h1>
+
+    <h2 class="text-dark-blue mb-20">Места за настаняване</h2>
+    <div class="results-container display-flex flex-column gap-1 mb-20">
+        <div class="width-100 result-container display-flex gap-1 flex-wrap cursor-pointer" (click)="details(reservation)" *ngFor="let reservation of accommodationReservations">
+            <div class="result-image-section">
+                <img class="result-image" [src]="reservation.accommodation.coverPhotoUrl" />
+              <div class="status-tag status-done" *ngIf="date > dateParse(reservation.endDate)">
+                <p>Минала</p>
+              </div>
+              <div class="status-tag status-pending" *ngIf="date >= dateParse(reservation.startDate) && date <= dateParse(reservation.endDate)">
+                <p>Активна</p>
+              </div>
+              <div class="status-tag status-success" *ngIf="date < dateParse(reservation.startDate)">
+                <p>Предстояща</p>
+              </div>
+            </div>
+            <div class="result-info-section display-flex flex-column content-between">
+                <div>
+                    <h3 class="result-heading mt-10 mb-10 text-dark-blue">{{ reservation.accommodation.type[0].name }} "{{ reservation.accommodation.name }}"</h3>
+                    <a target="_blank" [href]="reservation.accommodation.locationUrl">
+                        <p class="property-type mt-10">{{ reservation.accommodation.address }}</p>
+                    </a>
+                </div>
+
+                <div class="text-dark-blue display-flex flex-column gap-05">
+                    <p><span class="bold-500">Престой: </span> {{ reservation.startDate | date: 'dd.MM.yyyy'}} - {{ reservation.endDate | date: 'dd.MM.yyyy'}} г.</p>
+                    <p><span class="bold-500">Брой гости: </span> {{ reservation.guests }}</p>
+                </div>
+
+                <h3 class="price-label text-accent mb-10">{{ reservation.totalPrice }} лв.</h3>
+            </div>
+        </div>
+    </div>
+
+    <h2 class="text-dark-blue mb-20">Заведения</h2>
+    <div class="results-container display-flex flex-column gap-1 mb-20">
+        <div class="width-100 result-container display-flex gap-1 flex-wrapcursor-pointer" (click)="details(reservation)" *ngFor="let reservation of restaurantReservations">
+            <div class="result-image-section">
+                <img class="result-image" [src]="reservation.restaurant.coverPhotoUrl" />
+              <div class="status-tag status-success" *ngIf="date < dateParse(reservation.startDate)">
+                <p>Предстояща</p>
+              </div>
+              <div class="status-tag status-done" *ngIf="date > dateParse(reservation.startDate)">
+                    <p>Минала</p>
+                </div>
+
+            </div>
+            <div class="result-info-section display-flex flex-column content-between">
+                <div>
+                    <h3 class="result-heading mt-10 mb-10 text-dark-blue">{{ reservation.restaurant.type[0].name }} "{{ reservation.restaurant.name }}"</h3>
+                  <a target="_blank" [href]="reservation.restaurant.locationUrl">
+                  <p class="property-type mt-10">{{ reservation.restaurant.address }}</p>
+                  </a>
+                </div>
+
+          <div class="text-dark-blue display-flex flex-column gap-05">
+            <p><span class="bold-500">Дата: </span> {{ reservation.startDate | date: 'dd.MM.yyyy'}} г.</p>
+            <p><span class="bold-500">Брой гости: </span> {{ reservation.guests }}</p>
+          </div>
+
+                <h3 class="price-label text-accent mb-10">{{ reservation.startDate | date: 'HH:mm'}}</h3>
+            </div>
+        </div>
+    </div>
+
+</div>

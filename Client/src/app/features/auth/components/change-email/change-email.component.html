@@ -1,0 +1,14 @@
+<div class="background-color display-flex content-center items-center">
+  <a [routerLink]="['/']" class="button-back" mat-icon-button matTooltip="Accent" color="accent">
+    <i class="fa-solid fa-arrow-left"></i>
+  </a>
+  <div class="card">
+    <h2 class="title mb-20 text-center">Вашият имейл е успешно променен.</h2>
+    <div class="mr-20 ml-20" *ngIf="isAuthenticated">
+      <a [routerLink]="['/auth/login']" class="width-100 button" mat-raised-button color="accent">Към начало</a>
+    </div>
+    <div class="mr-20 ml-20" *ngIf="!isAuthenticated">
+      <a [routerLink]="['/auth/login']" class="width-100 button" mat-raised-button color="accent">Влезте в профила си</a>
+    </div>
+  </div>
+</div>

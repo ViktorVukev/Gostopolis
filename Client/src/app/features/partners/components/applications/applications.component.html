@@ -1,0 +1,63 @@
+<div class="wrapper">
+  <h1 class="text-dark-blue mt-20 mb-20">Вашите заявки</h1>
+  <a class="mb-20 text-decoration-none" mat-flat-button color="primary" [routerLink]="['/partners/apply']" *ngIf="!hasPendingApplication && !isPartner && canApply">Кандидатствай</a>
+  <!-- View for desktop version -->
+  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 desktop">
+
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef>Номер</th>
+      <td mat-cell *matCellDef="let application"> {{ application.id }} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="createdOn">
+      <th mat-header-cell *matHeaderCellDef>Дата на създаване</th>
+      <td mat-cell *matCellDef="let application"> {{ application.createdOn | date: 'medium' }} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="documentUrl">
+      <th mat-header-cell *matHeaderCellDef>Документ</th>
+      <td mat-cell *matCellDef="let request"><a [href]="request.documentUrl" target="_blank">Отвори</a></td>
+    </ng-container>
+
+    <ng-container matColumnDef="approvedOn">
+      <th mat-header-cell *matHeaderCellDef>Дата на отговор</th>
+      <td mat-cell *matCellDef="let application"> {{ application.approvedOn !== null ? (application.approvedOn | date: 'medium') : application.declinedOn !== null ? (application.declinedOn | date: 'medium') : ''}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="status">
+      <th mat-header-cell *matHeaderCellDef>Статус</th>
+      <td mat-cell *matCellDef="let application">
+        <!-- Status tag can be status-success, status-pending, status-declined -->
+        <div class="status-tag" [ngClass]="application.status === 1 ? 'status-pending' : application.status === 2 ? 'status-success' : 'status-declined'">
+          <p>{{ application.status === 1 ? 'Изчакваща' : application.status === 2 ? 'Одобрена' : 'Отхвърлена'}}</p>
+        </div>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+
+  <!-- View for mobile version -->
+  <mat-accordion class="mobile">
+
+    <mat-expansion-panel hideToggle *ngFor="let application of dataSource">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          {{ application.id }}
+        </mat-panel-title>
+        <mat-panel-description>
+          <!-- Status tag can be status-success, status-pending, status-declined -->
+          <div class="status-tag" [ngClass]="application.status === 1 ? 'status-pending' : application.status === 2 ? 'status-success' : 'status-declined'">
+            <p>{{ application.status === 1 ? 'Изчакваща' : application.status === 2 ? 'Одобрена' : 'Отхвърлена'}}</p>
+          </div>
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <p class="mb-20 line-height"><span class="bold">Дата на създаване:</span> {{ application.createdOn | date: 'medium' }}</p>
+      <p class="mb-20 line-height"><span class="bold">Документи: </span> <a [href]="application.documentUrl">Отвори</a></p>
+      <p *ngIf="application.status !== 1" class="mb-20 line-height"><span class="bold">Дата на отговор:</span> {{ application.approvedOn !== null ? (application.approvedOn | date: 'medium') : application.declinedOn !== null ? (application.declinedOn | date: 'medium') : '' }}</p>
+    </mat-expansion-panel>
+
+  </mat-accordion>
+
+</div>

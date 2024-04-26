@@ -1,0 +1,63 @@
+<div class="wrapper main-mtb">
+
+  <div *ngIf="restaurants.length === 0 && accommodations.length === 0">
+    <h1 class="text-dark-blue mt-20 mb-20">Вашите обекти</h1>
+    <a [routerLink]="['/partners/create-property']">
+      <button type="button" mat-raised-button color="primary">Добави обект</button>
+    </a>
+  </div>
+
+  <h1 class="text-dark-blue mt-20 mb-20" *ngIf="restaurants.length > 0">Вашите заведения</h1>
+  <div class="properties-container mb-40">
+    <a [routerLink]="['/restaurant/details']" [queryParams]="{ id: restaurant.id}" class="text-decoration-none"
+      *ngFor="let restaurant of restaurants">
+      <mat-card class="property-card">
+        <div class="image-container">
+          <img mat-card-image [src]="restaurant.coverPhotoUrl"
+            [ngClass]="restaurant.isVerified ? '' : 'property-unaccepted'">
+        </div>
+        <div class="type-tag text-dark-blue">{{ restaurant.type.name }}</div>
+        <div class="status-tag status-pending" *ngIf="!restaurant.isVerified">
+          <p>Изчаква одобрение</p>
+        </div>
+        <div class="status-tag status-success" *ngIf="!restaurant.isTemporaryClosed && restaurant.isVerified">
+          <p>Отворено</p>
+        </div>
+        <div class="status-tag status-declined" *ngIf="restaurant.isTemporaryClosed && restaurant.isVerified">
+          <p>Затворено</p>
+        </div>
+
+        <mat-card-content>
+          <h2 class="property-title text-dark-blue">{{ restaurant.name }}</h2>
+        </mat-card-content>
+      </mat-card>
+    </a>
+  </div>
+
+  <h1 class="text-dark-blue mt-20 mb-20" *ngIf="accommodations.length > 0">Вашите места за настаняване</h1>
+  <div class="properties-container">
+    <a [routerLink]="['/accommodation/details']" [queryParams]="{ id: accommodation.id}" class="text-decoration-none"
+      *ngFor="let accommodation of accommodations">
+      <mat-card class="property-card">
+        <div class="image-container">
+          <img mat-card-image [src]="accommodation.coverPhotoUrl"
+            [ngClass]="accommodation.isVerified ? '' : 'property-unaccepted'">
+        </div>
+        <div class="type-tag text-dark-blue">{{ accommodation.type.name }}</div>
+        <div class="status-tag status-pending" *ngIf="!accommodation.isVerified">
+          <p>Изчаква одобрение</p>
+        </div>
+        <div class="status-tag status-success" *ngIf="!accommodation.isTemporaryClosed">
+          <p>Отворено</p>
+        </div>
+        <div class="status-tag status-declined" *ngIf="accommodation.isTemporaryClosed && accommodation.isVerified">
+          <p>Затворено</p>
+        </div>
+
+        <mat-card-content>
+          <h2 class="property-title text-dark-blue">{{ accommodation.name }}</h2>
+        </mat-card-content>
+      </mat-card>
+    </a>
+  </div>
+</div>

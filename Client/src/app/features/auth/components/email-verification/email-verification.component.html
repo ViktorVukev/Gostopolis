@@ -1,0 +1,16 @@
+<div class="background-color display-flex content-center items-center">
+  <a [routerLink]="['/auth/register']" class="button-back" mat-icon-button matTooltip="Accent" color="accent">
+    <i class="fa-solid fa-arrow-left"></i>
+  </a>
+  <div class="card">
+    <h2 class="title mb-20 text-center">Потвърдете имейла си</h2>
+    <p class="text-center mb-20 mr-20 ml-20">Изпратихме линк за потвърждение на посочения от Вас имейл.</p>
+    <p class="text-center mb-20 mr-20 ml-20">Използвайте линка за завършване на регистрацията.</p>
+    <p class="text-center mb-20 mr-20 ml-20">Може да се наложи да погледнете и спам папката.</p>
+    <div class="mr-20 ml-20">
+      <button [disabled]="isButtonDisabled" class="width-100 button text-white" mat-raised-button color="accent" (click)="resend()">
+        Изпрати отново <span *ngIf="timeRemaining > 0">{{ formatTime(timeRemaining) }}</span>
+      </button>
+    </div>
+  </div>
+</div>

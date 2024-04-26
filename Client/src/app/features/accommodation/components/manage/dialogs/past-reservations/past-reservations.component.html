@@ -1,0 +1,36 @@
+<h1 mat-dialog-title class="text-dark-blue">Минали резервации</h1>
+
+<div mat-dialog-content class="display-flex flex-column">
+  <p class="text-gray mb-10" *ngIf="reservations.length == 0">Няма изминали резервации.</p>
+  <mat-accordion>
+    <mat-expansion-panel hideToggle *ngFor="let reservation of reservations">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          {{ reservation.client.firstName }} {{ reservation.client.lastName }}
+        </mat-panel-title>
+        <mat-panel-description>
+          {{ reservation.startDate | date: 'dd.MM.yyyy'}} - {{ reservation.endDate | date: 'dd.MM.yyyy'}}
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <p class="mb-10">
+        <span class="font-weight-500">Номер на резервацията: </span> {{ reservation.id }}
+      </p>
+      <p class="mb-10">
+        <span class="font-weight-500">Брой гости: </span> {{ reservation.guests }}
+      </p>
+      <p class="mb-10">
+        <span class="font-weight-500">Име на резервацията: </span> {{ reservation.client.firstName }} {{ reservation.client.lastName }}
+      </p>
+      <p class="mb-10">
+        <span class="font-weight-500">Телефон: </span> {{ reservation.client.phoneNumber}}
+      </p>
+      <p class="mb-10">
+        <span class="font-weight-500">Стаи №: </span> {{ reservation.tableNumbers }}
+      </p>
+    </mat-expansion-panel>
+  </mat-accordion>
+</div>
+
+<div mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Затвори</button>
+</div>

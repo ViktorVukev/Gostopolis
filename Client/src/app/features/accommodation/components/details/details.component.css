@@ -1,0 +1,83 @@
+.gallery {
+    background-color: #fafafa !important;
+    height: 25rem;
+}
+
+.property-title {
+    font-size: 2.25rem;
+    font-weight: 500;
+    line-height: 2.5rem;
+}
+
+.star-rating {
+    color: 	#FFBF00;
+}
+
+.property-type {
+    font-size: .875rem;
+    line-height: 1.125rem;
+}
+
+.label {
+    font-size: 1.25rem;
+    font-weight: 500;
+    line-height: 1.5rem;
+}
+
+.amenity-container {
+    width: calc(50% - 10px);
+}
+
+.amenity-label {
+    font-size: .875rem;
+    line-height: 1.125rem;
+}
+
+.section-title {
+    color: #191e3b;
+    font-size: 1.75rem;
+    font-weight: 500;
+    line-height: 2rem;
+}
+
+.comforts-container {
+    width: calc(33.33% - 10px);
+}
+
+.gray {
+    color: gray;
+}
+
+.more-label:hover {
+    opacity: 0.5;
+}
+
+.price-label {
+    font-weight: 500;
+    font-size: 1.25rem;
+    line-height: 1.5rem;
+}
+
+.price-label-details {
+    color: #191e3b;
+    font-size: .75rem;
+    line-height: 1rem;
+}
+
+.form-heading {
+    font-size: 20px;
+}
+
+/* Medium devices (tablets, 768px and up) */
+@media (max-width: 768px) {
+    .room-container {
+        width: 100%;
+    }
+}
+
+/* X-Large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {
+    .property-card-container {
+        flex-wrap: nowrap;
+    }
+}

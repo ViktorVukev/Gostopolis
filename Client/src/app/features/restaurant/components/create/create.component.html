@@ -1,0 +1,196 @@
+<div class="wrapper">
+    <h1 class="heading text-center text-dark-blue mt-40 mb-40">Добавяне на заведение</h1>
+    <mat-stepper labelPosition="bottom">
+        <mat-step>
+            <form method="post" [formGroup]="createForm">
+                <ng-template matStepLabel>Работно време</ng-template>
+                <div class="spacer"></div>
+                <div class="m0-auto width-16rem">
+                    <div *ngFor="let day of daysOfWeek; let i = index" class="mb-20">
+                        <div class="display-flex content-between width-100 gap-2 mb-10">
+                            <p class="bold">{{ day.bulgarian }}</p>
+                            <mat-slide-toggle color="primary" (change)="updateValidators(day.english, i)"
+                                [(ngModel)]="isOpen[i]" [ngModelOptions]="{ standalone: true }">
+                                {{ isOpen[i] ? 'Отворено' : 'Затворено' }}
+                            </mat-slide-toggle>
+                        </div>
+                        <div class="display-flex items-baseline content-center" *ngIf="isOpen[i]">
+                            <mat-form-field>
+                                <mat-label>Отваря</mat-label>
+                                <mat-select formControlName="{{ day.english }}OpenTime">
+                                    <mat-option *ngFor="let time of remainingTimeOptions(day.english, 'earlier')"
+                                        [value]="time">{{ time }}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            <div class="line">—</div>
+                            <mat-form-field>
+                                <mat-label>Затваря</mat-label>
+                                <mat-select formControlName="{{ day.english }}CloseTime"
+                                    appCompareDates="{{ day.english }}OpenTime">
+                                    <mat-option *ngFor="let time of remainingTimeOptions(day.english, 'later')"
+                                        [value]="time">{{ time }}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+                <div class="display-flex content-between items-baseline">
+                    <button mat-button matStepperPrevious>Обратно</button>
+                    <button mat-raised-button color="primary" matStepperNext>Напред</button>
+                </div>
+            </form>
+        </mat-step>
+        <mat-step>
+            <ng-template matStepLabel>Маси</ng-template>
+            <div class="spacer"></div>
+            <mat-card>
+                <mat-card-content class="display-flex flex-wrap gap-1 content-between">
+                    <div>
+                        <mat-card-title class="text-dark-blue bold">Добави тип маса</mat-card-title>
+                        <mat-card-subtitle>Добавете тип маса и брой на масите от този тип, които
+                            притежавате.</mat-card-subtitle>
+                    </div>
+                    <button mat-raised-button color="primary" mat-button (click)="openAddTableDialog()">Добави
+                        маса</button>
+                </mat-card-content>
+            </mat-card>
+
+            <div class="mt-40" *ngFor="let type of tableTypes">
+                <h2 class="bold text-dark-blue mb-10">Капацитет: {{ type.capacity }}</h2>
+                <p class="mb-20">
+                    {{ type?.isOutdoor ? 'Външна' : 'Вътрешна' }},
+                    {{ type?.isSmokingAllowed ? 'За пушачи' : 'За непушачи' }}
+                </p>
+                <div class="display-flex gap-1">
+                    <mat-card class="table-width" *ngFor="let table of type.tables">
+                        <i class="fa-solid fa-xmark text-right xmark-icon cursor-pointer gray"
+                            (click)="deleteTable(type, table)"></i>
+                        <mat-card-content>
+                            <input type="text" [(ngModel)]="table.number"
+                                class="width-85 table-number-input font-size-9 text-center" placeholder="Въведи номер"
+                                required />
+                        </mat-card-content>
+                    </mat-card>
+                </div>
+            </div>
+
+            <div class="display-flex content-between mt-40 items-baseline">
+                <button mat-button matStepperPrevious>Обратно</button>
+                <button mat-raised-button color="primary" matStepperNext>Напред</button>
+            </div>
+        </mat-step>
+
+        <mat-step>
+            <ng-template matStepLabel>Продукти</ng-template>
+            <div class="spacer"></div>
+            <mat-card>
+                <mat-card-content class="display-flex flex-wrap gap-1 content-between">
+                    <div>
+                        <mat-card-title class="text-dark-blue bold">Добави продукт</mat-card-title>
+                        <mat-card-subtitle>Добавете продукт заедно с информацията за него.</mat-card-subtitle>
+                    </div>
+                    <button mat-raised-button color="primary" mat-button (click)="openProductDialog()">Добави
+                        продукт</button>
+                </mat-card-content>
+            </mat-card>
+
+            <div class="display-flex flex-wrap gap-1 mt-40">
+                <mat-card class="product-width" *ngFor="let product of products">
+                    <div class="product-image-container mb-10">
+                        <img mat-card-image [src]="product.imageBase64" alt="Photo">
+                    </div>
+                    <mat-card-content>
+                        <p class="text-center mb-10">
+                            {{ product.name}}
+                        </p>
+                        <div class="display-flex content-center">
+                            <i class="fa-solid fa-trash text-accent cursor-pointer"
+                                (click)="deleteProduct(product)"></i>
+                        </div>
+                    </mat-card-content>
+                </mat-card>
+            </div>
+
+            <div class="display-flex content-between mt-40 items-baseline">
+                <button mat-button matStepperPrevious>Обратно</button>
+                <button mat-raised-button color="primary" matStepperNext>Напред</button>
+            </div>
+        </mat-step>
+
+        <mat-step>
+            <ng-template matStepLabel>Менюта</ng-template>
+            <div class="spacer"></div>
+            <mat-card>
+                <mat-card-content class="display-flex flex-wrap gap-1 content-between">
+                    <div>
+                        <mat-card-title class="text-dark-blue bold">Добави меню</mat-card-title>
+                        <mat-card-subtitle>Създайте меню и добавете продукти към него.</mat-card-subtitle>
+                    </div>
+                    <button mat-raised-button color="primary" mat-button (click)="openMenuDialog()">Добави
+                        меню</button>
+                </mat-card-content>
+            </mat-card>
+
+            <div class="spacer"></div>
+
+            <mat-accordion multi>
+                <mat-expansion-panel *ngFor="let menu of menus">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            {{ menu.name }}
+                            <div class="display-flex content-center ml-10">
+                                <i class="fa-solid fa-trash text-accent cursor-pointer" (click)="deleteMenu(menu)"></i>
+                            </div>
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+
+                    <div>
+                        <h2 class="bold text-dark-blue mb-10 width-100" *ngIf="menu.products.length > 0">Продукти в
+                            менюто
+                        </h2>
+                        <div class="display-flex gap-1 flex-wrap mb-20">
+                            <mat-card class="product-width" *ngFor="let product of menu.products">
+                                <div class="product-image-container mb-10">
+                                    <img mat-card-image [src]="product.imageBase64" alt="Photo">
+                                </div>
+                                <mat-card-content>
+                                    <p class="text-center mb-10">
+                                        {{ product.name }}
+                                    </p>
+                                    <div class="display-flex content-center">
+                                        <i class="fa-solid fa-trash text-accent cursor-pointer"
+                                            (click)="removeFromMenu(menu, product)"></i>
+                                    </div>
+                                </mat-card-content>
+                            </mat-card>
+                        </div>
+                    </div>
+
+                    <ng-container *ngFor="let category of productCategories; let i = index">
+                        <div *ngIf="hasProducts(category)" class="display-flex gap-1 flex-wrap mb-20">
+                            <h2 class="bold text-dark-blue mb-10 width-100">{{ category }}</h2>
+                            <mat-card class="product-width" *ngFor="let product of getProductsForCategory(i)">
+                                <div class="product-image-container mb-10">
+                                    <img mat-card-image [src]="product.imageBase64" alt="Photo">
+                                </div>
+                                <mat-card-content>
+                                    <p class="text-center mb-10">{{ product.name }}</p>
+                                    <div class="display-flex content-center">
+                                        <i class="fa-solid fa-add text-accent cursor-pointer"
+                                            (click)="addToMenu(menu, product)"></i>
+                                    </div>
+                                </mat-card-content>
+                            </mat-card>
+                        </div>
+                    </ng-container>
+                </mat-expansion-panel>
+            </mat-accordion>
+
+            <div class="display-flex content-between mt-40 items-baseline">
+                <button mat-button matStepperPrevious>Обратно</button>
+                <button mat-raised-button color="primary" matStepperNext (click)="finish()">Завърши</button>
+            </div>
+        </mat-step>
+    </mat-stepper>
+
+</div>

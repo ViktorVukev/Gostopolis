@@ -1,0 +1,103 @@
+<div class="wrapper">
+
+  <gallery gallerize [items]="images" loop class="gallery mt-20 mb-20" />
+
+  <mat-card>
+    <mat-card-content class="display-flex flex-wrap content-between property-card-container">
+      <div>
+        <div class="display-flex gap-1">
+          <h2 class="property-title text-dark-blue mb-10">{{ accommodation.name }}</h2>
+          <div class="display-flex gap-05" *ngIf="isAuthenticated">
+            <a [routerLink]="['/accommodation/manage']" *ngIf="isCurrentUserOwner()" [queryParams]="{ id: accommodation.id}">
+              <button mat-button color="primary">Управлявай</button>
+            </a>
+          </div>
+        </div>
+        <div class="star-rating">
+          <mat-icon *ngFor="let i of [].constructor(accommodation.stars)">star</mat-icon>
+        </div>
+        <p class="property-type">{{ accommodation.type.name }}</p>
+        <a [href]="'tel:'+ accommodation.phoneNumber" class="property-type">
+          <i class="fa-solid fa-phone text-dark-blue mt-10 mr-10"></i>{{ accommodation.phoneNumber }}
+        </a>
+
+        <h3 class="label mt-20 mb-10">Удобства</h3>
+        <div class="display-flex gap-1 flex-wrap content-between text-dark-blue">
+          <div class="display-flex gap-05 amenity-container" *ngIf="accommodation.hasParking">
+            <i class="fa-solid fa-square-parking"></i>
+            <p class="amenity-label">Паркинг</p>
+          </div>
+          <div class="display-flex gap-05 amenity-container" *ngIf="accommodation.hasPosTerminal">
+            <i class="fa-solid fa-credit-card"></i>
+            <p class="amenity-label">POS терминал</p>
+          </div>
+          <div class="display-flex gap-05 amenity-container" *ngIf="accommodation.acceptOnlinePayments">
+            <i class="fa-solid fa-credit-card"></i>
+            <p class="amenity-label">Плащане през Гостополис</p>
+          </div>
+          <div class="display-flex gap-05 amenity-container" *ngIf="accommodation.acceptPets">
+            <i class="fa-solid fa-dog"></i>
+            <p class="amenity-label">Домашни любимци</p>
+          </div>
+        </div>
+      </div>
+      <div>
+        <h3 class="label mt-20 mb-10">Локация</h3>
+        <google-map #myGoogleMap height="15rem" width="500px" [zoom]="zoom" [center]="center" [options]="options"
+          class="map"></google-map>
+        <a target="_blank" [href]="accommodation.locationUrl">
+          <p class="property-type mt-20">{{ accommodation.address }}</p>
+        </a>
+      </div>
+
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="mt-20">
+    <mat-card-content class="display-flex flex-column gap-1">
+      <h2 class="section-title">За обекта</h2>
+      <div [innerHTML]="accommodation.description"></div>
+      <div class="display-flex flex-column">
+        <p><span class="bold">Езици, говорени от персонала:</span> {{ accommodation.spokenLanguages }}</p>
+        <p class="mt-10" *ngIf="accommodation.checkInTime"><span class="bold">Настаняване:</span> {{ accommodation.checkInTime.substring(0, 5) }}</p>
+        <p class="mt-10" *ngIf="accommodation.checkOutTime"><span class="bold">Напускане:</span> {{ accommodation.checkOutTime.substring(0, 5) }}</p>
+        <p class="mt-10" *ngFor="let meal of accommodation.meals"><span class="bold">{{ meal.name }}:</span> {{ meal.startTime.substring(0, 5) }} - {{ meal.endTime.substring(0, 5) }}</p>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="mt-20" *ngIf="accommodation.facilities !== null && accommodation.facilities !== ''">
+    <mat-card-content class="display-flex gap-05 flex-column">
+      <h2 class="section-title mb-10">Удобства</h2>
+      <div *ngFor="let category of groupedFacilities">
+        <h2 class="form-heading text-dark-blue mt-20 ">{{ category.name }}</h2>
+        <div class="display-flex flex-wrap gap-05 content-start">
+          <div class="comforts-container display-flex gap-05" *ngFor="let facility of category.facilities">
+            <i class="fa-solid fa-check"></i>
+            <p class="amenity-label">{{ facility }}</p>
+          </div>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <h2 class="section-title mt-20 mb-20 ml-10" *ngIf="accommodation.roomConfigurations != null">Избери оферта</h2>
+  <div class="display-flex flex-wrap content-start gap-1 mb-40">
+    <mat-card class="width-32 room-container content-between" *ngFor="let configuration of roomConfigurations, let i = index">
+      <mat-card-header class="display-flex flex-column" *ngFor="let room of configuration.configuration">
+        <mat-card-title >{{ room.count }} X {{ room.name }}</mat-card-title>
+        <mat-card-subtitle>{{ roomTypes[room.type - 1] }}</mat-card-subtitle>
+        <p class="text-light-blue more-label cursor-pointer mt-10" (click)="openRoomDialog(room)">Повече за стаята<i
+            class="fa-solid fa-angles-right ml-10"></i></p>
+      </mat-card-header>
+      <mat-card-actions class="display-flex content-between items-center">
+        <div class="display-flex flex-column">
+          <h3 class="price-label ml-10 text-accent">{{ configuration.price }} лв.</h3>
+          <p class="price-label-details ml-10">{{ nights }} нощувки, {{ data.people }} гости, {{ data.rooms }} стаи</p>
+        </div>
+        <button mat-stroked-button color="primary" (click)="reserve(i)">Запази</button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+
+</div>

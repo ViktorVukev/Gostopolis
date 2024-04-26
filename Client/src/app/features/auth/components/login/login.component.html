@@ -1,0 +1,31 @@
+<div class="background-color display-flex content-center items-center">
+  <a [routerLink]="['/']" class="button-back" mat-icon-button matTooltip="Accent" color="accent">
+    <i class="fa-solid fa-arrow-left"></i>
+  </a>
+
+  <div class="card">
+    <h2 class="title mb-40 text-center">Влезте в профила си</h2>
+
+    <form class="mr-20 ml-20" [formGroup]="loginForm" (ngSubmit)="login()">
+      <label class="form-label">Email: </label>
+      <mat-form-field appearance="outline" class="width-100 mt-10">
+        <input formControlName="email" matInput type="email" placeholder="Email">
+        <mat-error *ngIf="email?.touched && email?.errors?.['required']">Полето е задължително.</mat-error>
+        <mat-error *ngIf="email?.touched && email?.errors?.['email']">Въведете валиден имейл.</mat-error>
+      </mat-form-field>
+
+      <label class="form-label">Парола: </label>
+      <mat-form-field appearance="outline" class="width-100 mt-10">
+        <input formControlName="password" matInput type="password" placeholder="Парола">
+        <mat-error *ngIf="password?.touched && password?.errors?.['required']">Полето е задължително.</mat-error>
+        <mat-error *ngIf="password?.touched && password?.errors?.['minlength']">Въведете поне 8 символа.</mat-error>
+      </mat-form-field>
+
+      <p class="text-center mt-20">Забравена парола? Променете я <a class="link" [routerLink]="['/auth/forgotten-password']">тук</a>.</p>
+
+      <button class="width-100 button mt-10 text-white" type="submit" mat-raised-button color="accent">Вход</button>
+
+      <p class="text-center mt-20">Нямате профил? Създайте <a class="link" [routerLink]="['/auth/register']">тук</a>.</p>
+    </form>
+  </div>
+</div>

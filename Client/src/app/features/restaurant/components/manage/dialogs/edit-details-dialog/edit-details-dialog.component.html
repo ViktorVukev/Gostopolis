@@ -1,0 +1,34 @@
+<h1 mat-dialog-title>Редакция на работно време</h1>
+
+<form [formGroup]="updateForm" (ngSubmit)="update()">
+  <div mat-dialog-content>
+      <div *ngFor="let day of daysOfWeek; let i = index" class="mb-20">
+          <div class="display-flex content-between width-100 gap-2 mb-10">
+              <p class="bold">{{ day.bulgarian }}</p>
+              <mat-slide-toggle color="primary" [(ngModel)]="isOpen[i]" [ngModelOptions]="{standalone: true}" (change)="updateValidators(day.english, i)">
+                  {{ isOpen[i] ? 'Отворено' : 'Затворено' }}
+              </mat-slide-toggle>
+          </div>
+          <div class="display-flex items-baseline gap-05 content-center" *ngIf="isOpen[i]">
+              <mat-form-field>
+                  <mat-label>Отваря</mat-label>
+                  <mat-select [formControlName]="day.english.toLowerCase() + 'OpenTime'">
+                      <mat-option *ngFor="let time of remainingTimeOptions(day.english.toLowerCase(), 'earlier')" [value]="time">{{ time }}</mat-option>
+                  </mat-select>
+              </mat-form-field>
+              <div class="line">—</div>
+              <mat-form-field>
+                  <mat-label>Затваря</mat-label>
+                  <mat-select [formControlName]="day.english.toLowerCase() + 'CloseTime'" appCompareDates="{{ day.english }}OpenTime">
+                      <mat-option *ngFor="let time of remainingTimeOptions(day.english.toLowerCase(), 'later')" [value]="time">{{ time }}</mat-option>
+                  </mat-select>
+              </mat-form-field>
+          </div>
+      </div>
+  </div>
+
+  <div mat-dialog-actions align="end">
+      <button mat-button mat-dialog-close>Отказ</button>
+      <button mat-button type="submit">Запази</button>
+  </div>
+</form>

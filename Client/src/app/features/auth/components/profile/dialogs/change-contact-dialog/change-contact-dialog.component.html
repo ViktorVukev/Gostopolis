@@ -1,0 +1,26 @@
+<h1 mat-dialog-title>Промяна на контакти</h1>
+
+<form method="post" [formGroup]="updateForm" (ngSubmit)="update()">
+  <div mat-dialog-content class="display-flex flex-column">
+
+    <mat-form-field appearance="outline">
+      <mat-label>Email</mat-label>
+      <input matInput type="email" formControlName="newEmail">
+      <mat-error *ngIf="email?.touched && email?.errors?.['required']">Полето е задължително.</mat-error>
+      <mat-error *ngIf="email?.touched && email?.errors?.['email']">Въведете валиден имейл.</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Телефонен номер</mat-label>
+      <span matTextPrefix class="pr-1">+359 &nbsp;</span>
+      <input type="tel" matInput formControlName="phoneNumber">
+      <mat-error *ngIf="phoneNumber?.touched && phoneNumber?.errors?.['required']">Полето е задължително.</mat-error>
+    </mat-form-field>
+
+  </div>
+
+  <div mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Отказ</button>
+    <button mat-button cdkFocusInitial  mat-dialog-close type="submit">Запази</button>
+  </div>
+</form>

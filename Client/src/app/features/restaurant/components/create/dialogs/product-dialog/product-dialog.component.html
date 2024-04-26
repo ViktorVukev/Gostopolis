@@ -1,0 +1,69 @@
+<h1 mat-dialog-title>Добави продукт</h1>
+
+<form [formGroup]="createForm" (ngSubmit)="onSubmit()" enctype="multipart/form-data">
+    <div mat-dialog-content class="display-flex flex-column">
+        <mat-form-field appearance="outline">
+            <mat-label>Име на продукта</mat-label>
+            <input matInput type="text" formControlName="name">
+          <mat-error *ngIf="name?.touched && name?.errors?.['required']">Полето е задължително.</mat-error>
+          <mat-error *ngIf="name?.touched && name?.errors?.['minlength']">Въведете поне 2 символа.</mat-error>
+          <mat-error *ngIf="name?.touched && name?.errors?.['maxlength']">Въведете не повече от 50 символа.</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+            <mat-label>Цена</mat-label>
+            <input matInput type="number" min="0" step="0.01" formControlName="price">
+          <mat-error *ngIf="price?.touched && price?.errors?.['required']">Полето е задължително.</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+            <mat-label>Грамаж</mat-label>
+            <input matInput type="number" min="0" step="0.01" formControlName="weight">
+          <mat-error *ngIf="weight?.touched && weight?.errors?.['required']">Полето е задължително.</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+            <mat-label>Категория</mat-label>
+            <mat-select formControlName="type">
+              <mat-option [value]="i + 1" *ngFor="let category of categoriesList; let i = index">{{ category }}</mat-option>
+            </mat-select>
+          <mat-error *ngIf="type?.touched && type?.errors?.['required']">Полето е задължително.</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+            <mat-label>Съставки</mat-label>
+            <mat-chip-grid #chipGrid aria-label="Избор на съставки">
+                @for (ingredient of ingredients; track ingredient) {
+                <mat-chip-row (removed)="remove(ingredient)">
+                    {{ingredient}}
+                    <button matChipRemove [attr.aria-label]="'премахни ' + ingredient">
+                        <mat-icon>cancel</mat-icon>
+                    </button>
+                </mat-chip-row>
+                }
+            </mat-chip-grid>
+            <input placeholder="Нова съставка..." #ingredientInput [formControl]="ingredientCtrl" [matChipInputFor]="chipGrid"
+                [matAutocomplete]="auto" [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                (matChipInputTokenEnd)="add($event)" formControlName="ingredients" />
+            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+                @for (ingredient of filteredIngredients | async; track ingredient) {
+                <mat-option [value]="ingredient">{{ingredient}}</mat-option>
+                }
+            </mat-autocomplete>
+        </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Изображение</mat-label>
+        <mat-toolbar>
+          <input matInput [value]="fileName" readonly name="name" />
+        </mat-toolbar>
+        <input type="file" accept="image/*" id="uploadFile" (change)="uploadFile($event)" />
+      </mat-form-field>
+    </div>
+
+    <div mat-dialog-actions align="end">
+        <button mat-button mat-dialog-close>Отказ</button>
+        <button mat-button cdkFocusInitial type="submit">Добави</button>
+    </div>
+
+</form>

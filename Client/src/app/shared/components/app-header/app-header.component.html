@@ -1,0 +1,70 @@
+<header class="display-flex items-center">
+  <div class="wrapper display-flex content-between items-center">
+    <div class="logo">
+      <img [routerLink]="['/']" src="../../../../assets/images/logo-header.svg" class="width-85"/>
+    </div>
+    <div class="menu">
+      <ul class="display-flex gap-1 content-end items-center">
+
+        <li class="menu-item" *ngIf="!isAuthenticated">
+          <a [routerLink]="['/auth/login']">
+            <button type="button" class="button text-white bold" mat-raised-button color="accent">Започни сега</button>
+          </a>
+        </li>
+
+        <li *ngIf="isAuthenticated && !isPartner" class="menu-item item-reservations">
+          <a class="text-decoration-none" [routerLink]="['/reservations']">
+          Резервации
+          </a>
+        </li>
+
+        <li *ngIf="isPartner" class="menu-item item-reservations">
+          <a class="text-decoration-none" [routerLink]="['/dashboard']">
+            Табло
+          </a>
+        </li>
+
+        <li *ngIf="isAuthenticated">
+
+          <a [matMenuTriggerFor]="menu">
+            <img class="profile-image" [src]="user.imageUrl" alt="Профилна снимка">
+          </a>
+
+          <mat-menu #menu="matMenu" xPosition="after">
+            <p class="menu-names text-dark-blue font" mat-menu-item>{{ user.firstName }} {{ user.lastName }}</p>
+
+            <!-- Reservations item - only for mobile -->
+            <a *ngIf="isPartner" [routerLink]="['/dashboard']" class="text-decoration-none menu-reservations">
+              <button mat-menu-item>Табло</button>
+            </a>
+            <mat-divider *ngIf="isPartner" class="menu-reservations"></mat-divider>
+
+            <!-- Partners pages -->
+            <a *ngIf="isPartner" [routerLink]="['/partners/create-property']" class="text-decoration-none">
+              <button mat-menu-item>Добави обект</button>
+            </a>
+            <a *ngIf="!hasApplied" [routerLink]="['/partners/apply']" class="text-decoration-none">
+              <button mat-menu-item>Стани партньор</button>
+            </a>
+            <a *ngIf="hasApplied" [routerLink]="['/partners/applications']" class="text-decoration-none">
+              <button mat-menu-item>Моите заявки</button>
+            </a>
+            <a [routerLink]="['/reservations']" class="text-decoration-none">
+              <button mat-menu-item>Моите резервации</button>
+            </a>
+            <mat-divider></mat-divider>
+
+            <!-- Profile auth module -->
+            <a [routerLink]="['/auth/profile']" class="text-decoration-none">
+              <button mat-menu-item>Профил</button>
+            </a>
+            <button (click)="logout()" mat-menu-item>Изход</button>
+
+          </mat-menu>
+
+        </li>
+
+      </ul>
+    </div>
+  </div>
+</header>

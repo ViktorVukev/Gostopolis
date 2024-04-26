@@ -1,0 +1,26 @@
+<h1 mat-dialog-title class="bold text-dark-blue">{{ room.name }}</h1>
+
+<div mat-dialog-content class="display-flex flex-column">
+
+    <h2 class="bold">Легла</h2>
+    <p class="gray" *ngFor="let bed of beds">{{ bed[1] }} x {{bedTypes[bed[0] - 1]}}</p>
+
+    <h2 class="bold mt-20">Удобства</h2>
+    <ul *ngFor="let amenity of roomAmenities">
+        <li>
+            {{ amenity }}
+        </li>
+    </ul>
+
+    <h2 class="bold mt-20">{{room.hasPrivateBathroom ? 'Самостоятелна' : 'Обща'}} баня</h2>
+    <ul *ngFor="let amenity of bathroomAmenities">
+        <li>
+            {{ amenity }}
+        </li>
+    </ul>
+
+</div>
+
+<div mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Затвори</button>
+</div>

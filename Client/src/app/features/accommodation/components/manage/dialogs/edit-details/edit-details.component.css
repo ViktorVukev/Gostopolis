@@ -1,0 +1,8 @@
+h1 {
+    font-size: 1.3rem !important;
+    font-weight: 500;
+}
+
+.gap-2 {
+    gap: 2rem;
+}
